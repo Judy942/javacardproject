@@ -2,7 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package kma.javacardproject;
+package kma;
+
+import java.awt.Font;
+import java.awt.HeadlessException;
+import java.math.BigInteger;
+import java.util.Base64;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 /**
  *
@@ -13,8 +24,21 @@ public class InitCardFrame extends javax.swing.JFrame {
     /**
      * Creates new form InitCardFrame
      */
+    SmartCard card = new SmartCard();
+    boolean tt = false;
+    boolean ttanh = false;
+    byte[] photo = null;
+    String id, name, phone, address, pin, repin, avatar;
+
     public InitCardFrame() {
         initComponents();
+        setLocationRelativeTo(null);
+    }
+
+    public InitCardFrame(SmartCard card, JButton jButton1, JLabel jLabel1, JTextField jTextField1) throws HeadlessException {
+        this.card = card;
+        this.jLabel1 = jLabel1;
+//        this.txtId = jTextField1;
     }
 
     /**
@@ -32,7 +56,7 @@ public class InitCardFrame extends javax.swing.JFrame {
         rePassword = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        btn2 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -69,13 +93,13 @@ public class InitCardFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(53, 66, 89));
         jLabel1.setText("Khởi Tạo Thẻ");
 
-        btn2.setBackground(new java.awt.Color(153, 153, 153));
-        btn2.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
-        btn2.setForeground(new java.awt.Color(255, 255, 255));
-        btn2.setText("LƯU");
-        btn2.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setBackground(new java.awt.Color(102, 102, 255));
+        btnSave.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
+        btnSave.setText("LƯU");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn2ActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
@@ -134,7 +158,7 @@ public class InitCardFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18))
             .addGroup(layout.createSequentialGroup()
                 .addGap(274, 274, 274)
-                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -172,7 +196,7 @@ public class InitCardFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel8)))
                 .addGap(18, 18, 18)
-                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
 
@@ -181,11 +205,69 @@ public class InitCardFrame extends javax.swing.JFrame {
 
     private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtAddressActionPerformed
 
-    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn2ActionPerformed
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
+        if (txtName.getText().equals("") == true || txtAddress.getText().equals("") || txtPhone.getText().equals("") == true || password.getPassword().equals("") == true || rePassword.getPassword().equals("") == true) {//rong
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin khách hàng!", "", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Bieu thuc chinh quy mo ta dinh dang so dien thoai
+            String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+            boolean kt = txtPhone.getText().matches(reg);
+            if (kt == false) {
+                JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng! Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                if (password.getText().equals(rePassword.getText()) == false) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã pin!", "", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    //Kiem tra so dt da trung trong csdl
+                    try {
+                        String phoneT = txtPhone.getText();
+                        System.out.println("txtPhone" + phoneT);
+                            try {
+                                // lay id theo sdt
+                                System.out.println("phoneT" + phoneT);
+//                                String idP = null;
+//                                id = String.format("%x", new BigInteger(1, idP.getBytes()));
+                                id = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));
+                                name = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
+                                address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
+                                phone = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));
+                                pin = String.format("%x", new BigInteger(1, password.getText().getBytes()));
+                                String dataReq = id + "03" + name + "03" + phone + "03" + address + "03" + pin;
+                                System.out.println("chuoi = " + dataReq);
+                                if (card.connectCard()) {
+                                    System.out.println("Kết nối đến applet");
+                                };
+                                boolean res;
+                                res = card.initCard(card.hexStringToByteArray(dataReq));
+
+                                if (res) {
+                                    System.out.println("TTTT");
+                                    //  Base64 encoded string
+                                    JOptionPane.showMessageDialog(null, "Lưu thông tin thành công!", "", JOptionPane.INFORMATION_MESSAGE);
+                                    LoginFrame formConnect = new LoginFrame();
+                                    formConnect.setLocationRelativeTo(null);
+                                    formConnect.setVisible(true);
+                                    this.setVisible(false);
+
+                                }
+                            } catch (Exception e) {
+                                System.out.println(e);
+                            }
+
+                    } catch (Exception e) {
+                    }
+
+                }
+            }
+        }
+
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
@@ -231,7 +313,7 @@ public class InitCardFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn2;
+    private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
