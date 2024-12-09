@@ -13,7 +13,7 @@ public class ThongTinThe {
 //    public static void main(String[] args) {
 //        System.out.println("Hello World!");
 //    }
-String id;
+   String id;
     String name;
     String address;
      String phone;
@@ -72,6 +72,5 @@ String id;
         this.pin = pin;
     }
    
-    
 }
 

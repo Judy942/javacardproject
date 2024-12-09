@@ -214,7 +214,11 @@ public class LoginFrame extends javax.swing.JFrame {
                     byte[] bytes = card.hexStringToByteArray(idT);
                     String id = new String(bytes, StandardCharsets.UTF_8);
                     System.out.println("id = " + id);
-
+                    //JOptionPane.showMessageDialog(null, "Xác thực thành công!");
+                    CardInfFrame customer = new CardInfFrame();
+                    customer.setLocationRelativeTo(null);
+                    customer.setVisible(true);
+                    this.setVisible(false);
                     break;
                 case "2":
                     JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
@@ -222,6 +226,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     unblock_btn.setEnabled(true);
                     break;
                 default:
+                    JOptionPane.showMessageDialog(null, "Lỗi Thẻ", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
 
             }
