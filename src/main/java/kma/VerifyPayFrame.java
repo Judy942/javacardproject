@@ -7,10 +7,7 @@ package kma;
 import java.awt.Font;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.spec.X509EncodedKeySpec;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -169,13 +166,7 @@ public class VerifyPayFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                 break;
                 case "1":
-                //Can xac thuc o day
-                String randomText = str.getAlphaNumericString(10);
-                String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
-                String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
-                String data = pinReq + "03" + random;
-                signData = card.hexStringToByteArray(data);
-                sign = card.getSign(signData);
+                
                 //lay id
                 String idT = card.getId();
                 byte[] bytes = card.hexStringToByteArray(idT);

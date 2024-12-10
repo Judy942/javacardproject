@@ -76,12 +76,13 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x02, (byte) 0x01, (byte) 0x01, data));
             String check = Integer.toHexString(response.getSW());
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println(String.format("%x", new BigInteger(1, response.getData())));
+            System.out.println(check+res);
             return res;
 
         } catch (Exception e) {
+            System.out.println(e);
+              return "0";
         }
-        return "0";
     }
 
     public String unblockcard(byte[] data) {
@@ -358,29 +359,29 @@ public class SmartCard {
         return "";
     }
 
-    public String getSign(byte[] data) {
-        try {
-            factory = TerminalFactory.getDefault();
-            terminals = factory.terminals().list();
-            terminal = terminals.get(0);
-            card = terminal.connect("T=0");
-            channel = card.getBasicChannel();
-            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x11, (byte) 0x01, (byte) 0x01, data));
-            String check = Integer.toHexString(response.getSW());
-            if (check.equals("9000")) {
-                String res = String.format("%x", new BigInteger(1, response.getData()));
-                System.out.println("response " + res);
-                return res;
-            } else if (check.equals("6984")) {
-
-                return "";
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        return "";
-    }
+//    public String getSign(byte[] data) {
+//        try {
+//            factory = TerminalFactory.getDefault();
+//            terminals = factory.terminals().list();
+//            terminal = terminals.get(0);
+//            card = terminal.connect("T=0");
+//            channel = card.getBasicChannel();
+//            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x11, (byte) 0x01, (byte) 0x01, data));
+//            String check = Integer.toHexString(response.getSW());
+//            if (check.equals("9000")) {
+//                String res = String.format("%x", new BigInteger(1, response.getData()));
+//                System.out.println("response " + res);
+//                return res;
+//            } else if (check.equals("6984")) {
+//
+//                return "";
+//            }
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        return "";
+//    }
 
     //check money + score
     public String checkScore() {

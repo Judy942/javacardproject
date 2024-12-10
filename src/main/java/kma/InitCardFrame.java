@@ -208,6 +208,7 @@ public class InitCardFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_txtAddressActionPerformed
 
+    @SuppressWarnings("empty-statement")
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
@@ -242,7 +243,7 @@ public class InitCardFrame extends javax.swing.JFrame {
                                 System.out.println("chuoi = " + dataReq);
                                 if (card.connectCard()) {
                                     System.out.println("Kết nối đến applet");
-                                };
+                                }
                                 boolean res;
                                 res = card.initCard(card.hexStringToByteArray(dataReq));
 

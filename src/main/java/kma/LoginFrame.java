@@ -3,14 +3,6 @@ package kma;
 
 import java.awt.Font;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -202,19 +194,6 @@ public class LoginFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 1 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "1":
-                    //Can xac thuc o day
-                    String randomText = string.getAlphaNumericString(10);
-                    String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
-                    String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
-                    String data = pinReq + "03" + random;
-                    signData = card.hexStringToByteArray(data);
-                    sign = card.getSign(signData);
-                    //lay id
-                    String idT = card.getId();
-                    byte[] bytes = card.hexStringToByteArray(idT);
-                    String id = new String(bytes, StandardCharsets.UTF_8);
-                    System.out.println("id = " + id);
-                    //JOptionPane.showMessageDialog(null, "Xác thực thành công!");
                     CardInfFrame customer = new CardInfFrame();
                     customer.setLocationRelativeTo(null);
                     customer.setVisible(true);
@@ -226,7 +205,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     unblock_btn.setEnabled(true);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Lỗi Thẻ", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Lỗi !!!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
 
             }

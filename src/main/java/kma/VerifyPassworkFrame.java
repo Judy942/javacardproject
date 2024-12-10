@@ -133,18 +133,16 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
                 case "5" -> JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                 case "4" -> JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                 case "1" -> {
-                    //Can xac thuc o day
-                    String randomText = str.getAlphaNumericString(10);
-                    String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
-                    String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
-                    String data = pinReq + "03" + random;
-                    signData = card.hexStringToByteArray(data);
-                    sign = card.getSign(signData);
+                    
                     //lay id
                     String idT = card.getId();
                     byte[] bytes = card.hexStringToByteArray(idT);
                     String id = new String(bytes, StandardCharsets.UTF_8);
                     System.out.println("id = " + id);
+                    DepositFrame napTien = new DepositFrame();
+                    napTien.setVisible(true);
+                    napTien.setLocationRelativeTo(null);
+                    this.setVisible(false);
                     
                 }
                 case "2" -> JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);

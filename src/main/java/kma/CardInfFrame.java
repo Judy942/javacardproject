@@ -75,9 +75,9 @@ public class CardInfFrame extends javax.swing.JFrame {
         String temp= du.substring(1);
         String[] divide=temp.split("ff");
         //1000000
-        int soDu= Integer.valueOf(divide[0]);
+        int soDu= Integer.parseInt(divide[0]);
         txtSoDu.setText(String.valueOf(soDu));
-        int diem= Integer.valueOf(divide[1]);
+        int diem= Integer.parseInt(divide[1]);
         txtScore.setText(String.valueOf(diem));
         
         //avatar
