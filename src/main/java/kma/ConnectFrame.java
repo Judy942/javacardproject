@@ -107,7 +107,7 @@ public class ConnectFrame extends javax.swing.JFrame {
             if (sc.disconnect()) {
                 isConnect = false;
                 bt_cnt.setText("Kết nối với thẻ");
-                bt_cnt.setBackground(Color.decode("#4fae52"));
+                bt_cnt.setForeground(Color.BLACK);
 
             }
         }

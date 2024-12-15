@@ -8,11 +8,14 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -82,14 +85,15 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             BufferedImage b;
             try {
                 b = ImageIO.read(bais);
-                ImageIcon icon = new ImageIcon(b.getScaledInstance(image1.getWidth(), image1.getHeight(), Image.SCALE_SMOOTH));
+                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
                 icon.getImage();
-                image1.setIcon(icon);
+                image.setIcon(icon);
             } catch (IOException ex) {
 
             }
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,10 +110,10 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         txtPhone = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        ButtonSave = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        image1 = new javax.swing.JLabel();
+        image = new javax.swing.JLabel();
         btnImage1 = new javax.swing.JButton();
         back = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -153,13 +157,13 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(53, 66, 89));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("CẬP NHẬT THÔNG TIN");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        ButtonSave.setBackground(new java.awt.Color(53, 66, 89));
+        ButtonSave.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        ButtonSave.setForeground(new java.awt.Color(255, 255, 255));
+        ButtonSave.setText("CẬP NHẬT THÔNG TIN");
+        ButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ButtonSaveActionPerformed(evt);
             }
         });
 
@@ -170,9 +174,8 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         txtId.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         txtId.setForeground(new java.awt.Color(53, 66, 89));
 
-        image1.setForeground(new java.awt.Color(53, 66, 89));
-        image1.setText("Ảnh");
-        image1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 180, 204)));
+        image.setForeground(new java.awt.Color(53, 66, 89));
+        image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 180, 204)));
 
         btnImage1.setBackground(new java.awt.Color(182, 205, 216));
         btnImage1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -185,7 +188,7 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             }
         });
 
-        back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        back.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
         back.setForeground(new java.awt.Color(53, 66, 89));
         back.setText("Quay lại");
         back.addActionListener(new java.awt.event.ActionListener() {
@@ -215,35 +218,27 @@ public class UpdateInfFrame extends javax.swing.JFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txtPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
                                 .addComponent(txtAddress)))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(image1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(111, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(91, 91, 91))))
+                .addGap(100, 100, 100)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                    .addComponent(btnImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(image1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel7)
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -260,9 +255,9 @@ public class UpdateInfFrame extends javax.swing.JFrame {
                             .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))))
                 .addGap(74, 74, 74)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                    .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -303,26 +298,34 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAddressActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void ButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSaveActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
+        System.out.println("Test " + photo);
         if (txtName.getText().equals("") == true || txtAddress.getText().equals("") == true) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             // get data from input
             String stName = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
             String address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
+            String avatar = String.format("%x", new BigInteger(1, photo));
             String dataReq = stName + "03" + address;
             System.out.println("dataReq ;" + dataReq);
             boolean res;
+            boolean resUpAvatar;
+            resUpAvatar = card.uploadAvatar(card.hexStringToByteArray(avatar));
             res = card.changeInfo(card.hexStringToByteArray(dataReq));
-            if (res) {
+            if (res&&resUpAvatar) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công !", "", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                if (!resUpAvatar&&res) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật ảnh thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
+                } else {
                 JOptionPane.showMessageDialog(null, "Cập nhật thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_ButtonSaveActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         // TODO add your handling code here:
@@ -334,6 +337,22 @@ public class UpdateInfFrame extends javax.swing.JFrame {
 
     private void btnImage1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImage1ActionPerformed
         // TODO add your handling code here:
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.showOpenDialog(null);
+        File f = jFileChooser.getSelectedFile();
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(f.toString()).getImage().getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
+        image.setIcon(imageIcon);
+        String fileName = f.getAbsolutePath();
+        System.out.println("ok " + f.toString());
+        try {
+            BufferedImage bImage = ImageIO.read(new File(fileName));
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(bImage, "jpg", bos);
+            photo = bos.toByteArray();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_btnImage1ActionPerformed
 
     /**
@@ -372,10 +391,10 @@ public class UpdateInfFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonSave;
     private javax.swing.JButton back;
     private javax.swing.JButton btnImage1;
-    private javax.swing.JLabel image1;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel image;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

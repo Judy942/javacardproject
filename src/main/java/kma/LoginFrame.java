@@ -3,6 +3,7 @@ package kma;
 
 import java.awt.Font;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -16,13 +17,12 @@ public class LoginFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
-    String login;
-    String pin;
-    String checkCard;
+    String login, password,sign, checkCard;
     SmartCard card = new SmartCard();
-    String sign;
-    RandomString string = new RandomString();
+    RandomString str = new RandomString();
     byte signData[];
+    boolean verify;
+
 
     public LoginFrame() {
         initComponents();
@@ -46,7 +46,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        Input_Pin = new javax.swing.JPasswordField();
+        Input_Password = new javax.swing.JPasswordField();
         bt_login = new javax.swing.JButton();
         init_btn = new javax.swing.JButton();
         unblock_btn = new javax.swing.JButton();
@@ -62,12 +62,12 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        Input_Pin.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        Input_Pin.setForeground(new java.awt.Color(53, 66, 89));
-        Input_Pin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(53, 66, 89)));
-        Input_Pin.addActionListener(new java.awt.event.ActionListener() {
+        Input_Password.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        Input_Password.setForeground(new java.awt.Color(53, 66, 89));
+        Input_Password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(53, 66, 89)));
+        Input_Password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Input_PinActionPerformed(evt);
+                Input_PasswordActionPerformed(evt);
             }
         });
 
@@ -112,7 +112,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(53, 66, 89));
-        jLabel2.setText("Nhập mã PIN");
+        jLabel2.setText("Nhập mật khẩu");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,7 +124,7 @@ public class LoginFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Input_Pin)
+                    .addComponent(Input_Password)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(bt_login, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
@@ -136,7 +136,7 @@ public class LoginFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(563, 563, 563)
                                 .addComponent(jLabel3))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -148,7 +148,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Input_Pin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Input_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -162,24 +162,24 @@ public class LoginFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Input_PinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Input_PinActionPerformed
+    private void Input_PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Input_PasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_Input_PinActionPerformed
+    }//GEN-LAST:event_Input_PasswordActionPerformed
 
     private void bt_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_loginActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         checkCard = card.checkCard();
-        if (Input_Pin.getText().equals("") == true) {
+        if (Input_Password.getText().equals("") == true) {
             JOptionPane.showMessageDialog(null, "Nhập mã pin để đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Đến đây");
         } else {
-            pin = new String(Input_Pin.getPassword());
-            System.out.println("pin " + pin);
-            System.out.println("pin2 " + String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/))));
-            System.out.println("pin3 " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
+            password = new String(Input_Password.getPassword());
+            System.out.println("pin " + password);
+            System.out.println("pin2 " + String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/))));
+            System.out.println("pin3 " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
             //id = String.format("%x", new BigInteger(1, txtId.getText().getBytes()));
-            login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
+            login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
                 case "7":
                     JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 4 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
@@ -194,6 +194,18 @@ public class LoginFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 1 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "1":
+                    //TODO: Can xac thuc o day
+                    String randomText = str.getAlphaNumericString(10);
+                    String pinReq = String.format("%x", new BigInteger(1, password.getBytes()));
+                    String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
+                    String data = pinReq + "03" + random;
+                    signData = card.hexStringToByteArray(data);
+                    sign = card.getSign(signData);
+                    //lay id
+                    String idT = card.getId();
+                    byte[] bytes = card.hexStringToByteArray(idT);
+                    String id = new String(bytes, StandardCharsets.UTF_8);
+                    System.out.println("id = " + id);
                     CardInfFrame customer = new CardInfFrame();
                     customer.setLocationRelativeTo(null);
                     customer.setVisible(true);
@@ -205,11 +217,9 @@ public class LoginFrame extends javax.swing.JFrame {
                     unblock_btn.setEnabled(true);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Lỗi !!!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Có Lỗi xảy ra !!!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
-
             }
-
         }
     }//GEN-LAST:event_bt_loginActionPerformed
 
@@ -237,15 +247,15 @@ public class LoginFrame extends javax.swing.JFrame {
     private void unblock_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unblock_btnActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.BOLD, 24)));
-        if (Input_Pin.getText().equals("") == true) {
+        if (Input_Password.getText().equals("") == true) {
             JOptionPane.showMessageDialog(null, "Nhập mã pin để mở thẻ!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            pin = new String(Input_Pin.getPassword());
-            System.out.println("pinUn " + pin);
-            System.out.println("pinUn " + String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/))));
-            System.out.println("pinUn " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
+            password = new String(Input_Password.getPassword());
+            System.out.println("pinUn " + password);
+            System.out.println("pinUn " + String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/))));
+            System.out.println("pinUn " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
             //id = String.format("%x", new BigInteger(1, txtId.getText().getBytes()));
-            String unBlock = card.unblockcard(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
+            String unBlock = card.unblockcard(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
             switch (unBlock) {
                 case "0":
                     JOptionPane.showMessageDialog(null, "Mở khóa thất bại!", "", JOptionPane.INFORMATION_MESSAGE);
@@ -298,7 +308,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField Input_Pin;
+    private javax.swing.JPasswordField Input_Password;
     private javax.swing.JButton bt_login;
     private javax.swing.JButton init_btn;
     private javax.swing.JLabel jLabel1;

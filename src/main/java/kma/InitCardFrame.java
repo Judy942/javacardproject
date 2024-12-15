@@ -7,10 +7,16 @@ package kma;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPublicKeySpec;
+import java.sql.PreparedStatement;
 import java.util.Base64;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -29,6 +35,7 @@ public class InitCardFrame extends javax.swing.JFrame {
     boolean ttanh = false;
     byte[] photo = null;
     String id, name, phone, address, pin, repin, avatar;
+    BigInteger modulusPubkey, exponentPubkey;
 
     public InitCardFrame() {
         initComponents();
@@ -223,9 +230,9 @@ public class InitCardFrame extends javax.swing.JFrame {
 
             } else {
                 if (password.getText().equals(rePassword.getText()) == false) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã pin!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mã pin không trùng khớp!", "", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    //Kiem tra so dt da trung trong csdl
+                    //TODO: kiểm tra sdt đã tồn tại trong db chưa 
                     try {
                         String phoneT = txtPhone.getText();
                         System.out.println("txtPhone" + phoneT);
@@ -248,8 +255,21 @@ public class InitCardFrame extends javax.swing.JFrame {
                                 res = card.initCard(card.hexStringToByteArray(dataReq));
 
                                 if (res) {
-                                    System.out.println("TTTT");
+                                    System.out.println("Thành công");
+                                    //TODO: ghi public key ->db
+                                    modulusPubkey = card.getModulusPubkey();
+                                    exponentPubkey = card.getExponentPubkey();
+                                    String publicKey = modulusPubkey + "/" + exponentPubkey;
+                                    System.out.println("publicKey = " + publicKey);
+                                    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+                                    RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(modulusPubkey, exponentPubkey);
+                                    PublicKey key = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
+                                    byte[] publicKeyByte = key.getEncoded();
+
                                     //  Base64 encoded string
+                                    String publicKeyString = Base64.getEncoder().encodeToString(publicKeyByte);
+                                    System.out.println("publicKeyString=" + publicKeyString);
+
                                     JOptionPane.showMessageDialog(null, "Lưu thông tin thành công!", "", JOptionPane.INFORMATION_MESSAGE);
                                     LoginFrame formConnect = new LoginFrame();
                                     formConnect.setLocationRelativeTo(null);

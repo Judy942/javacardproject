@@ -95,7 +95,7 @@ public class DepositFrame extends javax.swing.JFrame {
             }
         });
 
-        back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        back.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
         back.setForeground(new java.awt.Color(53, 66, 89));
         back.setText("Cancel");
         back.addActionListener(new java.awt.event.ActionListener() {
@@ -153,9 +153,9 @@ public class DepositFrame extends javax.swing.JFrame {
                         .addComponent(txtMoneyInput, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNapTien, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNapTien, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(38, 38, 38))
         );
 
@@ -184,9 +184,7 @@ public class DepositFrame extends javax.swing.JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Nạp tiền thất bại!","", JOptionPane.INFORMATION_MESSAGE);
             }
-
         }
-
     }//GEN-LAST:event_btnNapTienActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed

@@ -37,6 +37,7 @@ public class VerifyPayFrame extends javax.swing.JFrame {
         System.out.println("getPay " + customer.getPay());
         setLocationRelativeTo(null);
     }
+
     public VerifyPayFrame() {
         initComponents();
     }
@@ -148,72 +149,73 @@ public class VerifyPayFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         if (txtPin.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Mời nhập mã pin!","", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Mời nhập mã pin!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             pin = new String(txtPin.getPassword());
             String login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
                 case "7":
-                JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 case "6":
-                JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 case "5":
-                JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 case "4":
-                JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 case "1":
-                
-                //lay id
-                String idT = card.getId();
-                byte[] bytes = card.hexStringToByteArray(idT);
-                String id = new String(bytes, StandardCharsets.UTF_8);
-                System.out.println("id = " + id);
-                try {
-                        String temp = String.valueOf(customer.getPay());
-                        System.out.println(temp);
-                        String money;
-                        if (temp.length() % 2 == 0) {
-                            money = temp;
-                        } else {
-                            money = "0" + temp;
-                        }
-                        System.out.println("money " + money);
-                        String options[]=new String[2];
-                        options[0]="Có";
-                        options[1]="Không";
-                        int choose= JOptionPane.showOptionDialog(null, "Sử dụng tích điểm!", "Cảm ơn quý khách!", 0, QUESTION_MESSAGE ,null, options, null);
-                        if (choose == JOptionPane.YES_OPTION) {
-                            money = "01" + money;
-                        } else {
-                            money = "00" + money;
-                        }
-                        String pay = card.pay(card.hexStringToByteArray(money));
-                        switch (pay) {
-                            case "1":
+                    //Can xac thuc o day
+                    String randomText = str.getAlphaNumericString(10);
+                    String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
+                    String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
+                    String data = pinReq + "03" + random;
+                    signData = card.hexStringToByteArray(data);
+                    sign = card.getSign(signData);
+
+                    //lay id
+                    String idT = card.getId();
+                    byte[] bytes = card.hexStringToByteArray(idT);
+                    String id = new String(bytes, StandardCharsets.UTF_8);
+                    System.out.println("id = " + id);
+                    String temp = String.valueOf(customer.getPay());
+                    System.out.println(temp);
+                    String money;
+                    if (temp.length() % 2 == 0) {
+                        money = temp;
+                    } else {
+                        money = "0" + temp;
+                    }
+                    System.out.println("money " + money);
+                    String options[] = new String[2];
+                    options[0] = "Có";
+                    options[1] = "Không";
+                    int choose = JOptionPane.showOptionDialog(null, "Sử dụng tích điểm!", "Cảm ơn quý khách!", 0, QUESTION_MESSAGE, null, options, null);
+                    if (choose == JOptionPane.YES_OPTION) {
+                        money = "01" + money;
+                    } else {
+                        money = "00" + money;
+                    }
+                    String pay = card.pay(card.hexStringToByteArray(money));
+                    switch (pay) {
+                        case "1":
                             JOptionPane.showMessageDialog(null, "Thanh toán thành công! Cảm ơn quý khách!", "", JOptionPane.INFORMATION_MESSAGE);
                             this.setVisible(false);
                             break;
-                            case "0":
+                        case "0":
                             JOptionPane.showMessageDialog(null, "Thanh toán không thành công!", "", JOptionPane.INFORMATION_MESSAGE);
                             this.setVisible(false);
                             break;
-                        }
+                    }
 
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Lỗi rồi", "", JOptionPane.INFORMATION_MESSAGE);
-                    Logger.getLogger(VerifyPassworkFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                break;
+                    break;
                 case "2":
-                JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                    JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
+                    break;
                 default:
-                break;
+                    break;
 
             }
 

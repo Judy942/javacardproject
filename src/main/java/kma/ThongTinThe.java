@@ -13,11 +13,7 @@ public class ThongTinThe {
 //    public static void main(String[] args) {
 //        System.out.println("Hello World!");
 //    }
-   String id;
-    String name;
-    String address;
-     String phone;
-    String pin;
+   String id, name, address, phone, password;
     byte[] image;
     int tk;
     int score;
@@ -64,12 +60,12 @@ public class ThongTinThe {
         this.phone = phone;
     }
 
-    public String getPin() {
-        return pin;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPin(String pin) {
-        this.pin = pin;
+    public void setPassword(String pin) {
+        this.password = pin;
     }
    
 }

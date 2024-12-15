@@ -7,7 +7,6 @@ package kma;
 import java.awt.Font;
 import java.text.DecimalFormat;
 import java.util.Vector;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -27,10 +26,9 @@ public class PayFrame extends javax.swing.JFrame {
     SmartCard card = new SmartCard();
     boolean isConnect = false;
 
-
     public PayFrame() {
         initComponents();
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));  
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         if (card.connectCard()) {
             isConnect = true;
             JOptionPane.showMessageDialog(this, "Kết nối đến thẻ thành công!", "", JOptionPane.INFORMATION_MESSAGE);
@@ -40,43 +38,38 @@ public class PayFrame extends javax.swing.JFrame {
             isConnect = false;
         }
     }
-    
-        public void addTable(String Name, Double Price){
+
+    public void addTable(String Name, Double Price) {
         Double tqty;
- 
         String Qty = JOptionPane.showInputDialog("Nhập số lượng");
-        if(Qty == null)
-        { 
+        if (Qty == null) {
             Qty = "";
         }
-        if (Qty.isEmpty())
-        {
+        if (Qty.isEmpty()) {
             tqty = Double.valueOf(0);
+        } else {
+
+            tqty = Double.valueOf(Qty);
+            if (tqty > 0) {
+                Double Tot_Price = Price * tqty;
+
+                DecimalFormat df = new DecimalFormat("00");
+                String d11 = df.format(Tot_Price);
+
+                DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
+
+                Vector v = new Vector();
+                v.add(Name);
+                v.add(Qty);
+                v.add(d11);
+                dt.addRow(v);
+            }
+
         }
-        else{
-         
-         tqty = Double.valueOf(Qty);
-         if(tqty > 0){
-         Double Tot_Price = Price * tqty ;
-        
-        DecimalFormat df = new DecimalFormat("00");
-        String d11 = df.format(Tot_Price);
-       
-        
-        DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
-        
-        Vector v = new Vector();
-        v.add(Name);
-        v.add(Qty);
-        v.add(d11);
-        dt.addRow(v);
-         }
-         
-        }
-      cart_cal();
- } 
-        
-            public void cart_cal() {
+        cart_cal();
+    }
+
+    public void cart_cal() {
 
         int numofrow = jTable1.getRowCount();
         double total = 0;
@@ -88,7 +81,7 @@ public class PayFrame extends javax.swing.JFrame {
 
         DecimalFormat df = new DecimalFormat("00");
         String d1 = df.format(total);
-        Too.setText(d1);
+        Sum.setText(d1);
 
     }
 
@@ -108,7 +101,7 @@ public class PayFrame extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         Sum = new javax.swing.JLabel();
-        jButton17 = new javax.swing.JButton();
+        BtnThanhToan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -171,13 +164,13 @@ public class PayFrame extends javax.swing.JFrame {
         Sum.setForeground(new java.awt.Color(53, 66, 89));
         Sum.setText("0");
 
-        jButton17.setBackground(new java.awt.Color(53, 66, 89));
-        jButton17.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton17.setForeground(new java.awt.Color(255, 255, 255));
-        jButton17.setText("THANH TOÁN");
-        jButton17.addActionListener(new java.awt.event.ActionListener() {
+        BtnThanhToan.setBackground(new java.awt.Color(53, 66, 89));
+        BtnThanhToan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        BtnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
+        BtnThanhToan.setText("THANH TOÁN");
+        BtnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton17ActionPerformed(evt);
+                BtnThanhToanActionPerformed(evt);
             }
         });
 
@@ -191,7 +184,7 @@ public class PayFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Sum, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BtnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -201,7 +194,7 @@ public class PayFrame extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(Sum)
-                    .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BtnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -245,7 +238,6 @@ public class PayFrame extends javax.swing.JFrame {
         Object[] row = new Object[3];
         DefaultTableModel model2 = (DefaultTableModel) jTable1.getModel();
         for (int i = 0; i < indexs.length; i++) {
-
             row[0] = model.getValueAt(indexs[i], 0);
             row[2] = model.getValueAt(indexs[i], 2);
             String name = String.valueOf(row[2]);
@@ -253,23 +245,23 @@ public class PayFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
-    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+    private void BtnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnThanhToanActionPerformed
 
         int numrow = jTable1.getRowCount();
-        int tot = 0;
+        int sum = 0;
         for (int i = 0; i < numrow; i++) {
             int val = Integer.valueOf(jTable1.getValueAt(i, 2).toString());
-            tot += val;
+            sum += val;
         }
-        customer.setPay(tot);
-        Too.setText(Integer.toString(tot));
+        customer.setPay(sum);
+        Sum.setText(Integer.toString(sum));
 
         VerifyPayFrame pay = new VerifyPayFrame(customer);
         System.out.println("get customer" + pay.customer.getPay());
         pay.setVisible(true);
         pay.setLocationRelativeTo(null);
         this.setVisible(false);
-    }//GEN-LAST:event_jButton17ActionPerformed
+    }//GEN-LAST:event_BtnThanhToanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,25 +299,9 @@ public class PayFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnThanhToan;
     private javax.swing.JLabel Sum;
-    private javax.swing.JLabel Too;
-    private javax.swing.JLabel Too1;
-    private javax.swing.JLabel Too2;
-    private javax.swing.JLabel Too3;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
