@@ -82,6 +82,8 @@ public class CardInfFrame extends javax.swing.JFrame {
         
         //avatar
         String studentAvatar = card.getAvatar();
+        System.out.println("Avatar " + studentAvatar);
+
         if (studentAvatar.equals("") == false) {
             byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);

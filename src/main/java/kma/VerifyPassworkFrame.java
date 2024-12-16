@@ -122,16 +122,16 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         boolean verify;
         if (txtPin.getPassword().equals("")) {
-            JOptionPane.showMessageDialog(null, "Mời nhập mã pin!", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Mời nhập mật khẩu!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            //xác thực mã pin
+            //xác thực Mật khẩu
             pin = new String(txtPin.getPassword());
             String login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
-                case "7" -> JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                case "6" -> JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                case "5" -> JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                case "4" -> JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "7" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "6" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "5" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "4" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                 case "1" -> {
                     //ToDO: Can xac thuc o day
                     String randomText = str.getAlphaNumericString(10);

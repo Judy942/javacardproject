@@ -149,22 +149,22 @@ public class VerifyPayFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         if (txtPin.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Mời nhập mã pin!", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Mời nhập Mật khẩu!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             pin = new String(txtPin.getPassword());
             String login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
                 case "7":
-                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "6":
-                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "5":
-                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "4":
-                    JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "1":
                     //TODO: Can xac thuc o day

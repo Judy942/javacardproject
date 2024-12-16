@@ -152,7 +152,7 @@ public class LoginFrame extends javax.swing.JFrame {
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         checkCard = card.checkCard();
         if (Input_Password.getText().equals("") == true) {
-            JOptionPane.showMessageDialog(null, "Nhập mã pin để đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Nhập mật khẩu để đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Đến đây");
         } else {
             password = new String(Input_Password.getPassword());
@@ -163,16 +163,16 @@ public class LoginFrame extends javax.swing.JFrame {
             login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
                 case "7":
-                    JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 4 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "6":
-                    JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 3 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "5":
-                    JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 2 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "4":
-                    JOptionPane.showMessageDialog(null, "Sai mã pin. Còn 1 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "1":
                     //TODO: Can xac thuc o day
@@ -208,7 +208,7 @@ public class LoginFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.BOLD, 24)));
         if (Input_Password.getText().equals("") == true) {
-            JOptionPane.showMessageDialog(null, "Nhập mã pin để mở thẻ!", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Nhập mật khẩu để mở thẻ!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             password = new String(Input_Password.getPassword());
             System.out.println("pinUn " + password);

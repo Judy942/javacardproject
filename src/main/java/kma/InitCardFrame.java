@@ -230,7 +230,7 @@ public class InitCardFrame extends javax.swing.JFrame {
 
             } else {
                 if (password.getText().equals(rePassword.getText()) == false) {
-                    JOptionPane.showMessageDialog(null, "Mã pin không trùng khớp!", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!", "", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     //TODO: kiểm tra sdt đã tồn tại trong db chưa 
                     try {
