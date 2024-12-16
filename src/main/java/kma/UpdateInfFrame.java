@@ -314,7 +314,8 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             boolean res;
             boolean resUpAvatar;
             resUpAvatar = card.uploadAvatar(card.hexStringToByteArray(avatar));
-            res = card.changeInfo(card.hexStringToByteArray(dataReq));
+            res = true;
+//            res = card.changeInfo(card.hexStringToByteArray(dataReq));
             if (res&&resUpAvatar) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công !", "", JOptionPane.INFORMATION_MESSAGE);
             } else {

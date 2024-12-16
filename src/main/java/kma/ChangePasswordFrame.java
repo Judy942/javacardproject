@@ -169,7 +169,7 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
             newpassword = String.format("%x", new BigInteger(1, newPassword.getText().getBytes()));
             repassword = String.format("%x", new BigInteger(1, rePassword.getText().getBytes()));
             if (newpassword.equals(repassword) == false) {
-                JOptionPane.showMessageDialog(null, "Pin nhập lại không trùng!","", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Mật khẩu nhập lại không khớp!","", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 String dataReq = password + "03" + newpassword;
                 boolean res;

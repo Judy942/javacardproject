@@ -162,7 +162,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel3.setText("Họ tên");
 
         btnUpdate.setBackground(new java.awt.Color(53, 66, 89));
-        btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("CẬP NHẬT");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +176,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         txtName.setText("Họ tên");
 
         btnNapTien.setBackground(new java.awt.Color(53, 66, 89));
-        btnNapTien.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        btnNapTien.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnNapTien.setForeground(new java.awt.Color(255, 255, 255));
         btnNapTien.setText("NẠP TIỀN");
         btnNapTien.addActionListener(new java.awt.event.ActionListener() {
@@ -190,9 +190,9 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel5.setText("Địa chỉ");
 
         btnChangePass.setBackground(new java.awt.Color(53, 66, 89));
-        btnChangePass.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        btnChangePass.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnChangePass.setForeground(new java.awt.Color(255, 255, 255));
-        btnChangePass.setText("ĐỔI MÃ PIN");
+        btnChangePass.setLabel("ĐỔI MẬT KHẨU");
         btnChangePass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChangePassActionPerformed(evt);
@@ -302,6 +302,8 @@ public class CardInfFrame extends javax.swing.JFrame {
                     .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13))
         );
+
+        btnChangePass.getAccessibleContext().setAccessibleName("ĐỔI MẬT KHẨU");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

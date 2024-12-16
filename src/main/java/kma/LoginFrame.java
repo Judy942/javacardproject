@@ -31,8 +31,6 @@ public class LoginFrame extends javax.swing.JFrame {
         if (checkCard.equals("0")) {
             bt_login.setEnabled(false);
             unblock_btn.setEnabled(false);
-        } else {
-            init_btn.setEnabled(false);
         }
     }
 
@@ -48,7 +46,6 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         Input_Password = new javax.swing.JPasswordField();
         bt_login = new javax.swing.JButton();
-        init_btn = new javax.swing.JButton();
         unblock_btn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -84,19 +81,6 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
-        init_btn.setBackground(new java.awt.Color(102, 102, 255));
-        init_btn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        init_btn.setForeground(new java.awt.Color(255, 255, 255));
-        init_btn.setText("KHỞI TẠO THẺ");
-        init_btn.setBorderPainted(false);
-        init_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        init_btn.setPreferredSize(new java.awt.Dimension(170, 30));
-        init_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                init_btnActionPerformed(evt);
-            }
-        });
-
         unblock_btn.setBackground(new java.awt.Color(102, 102, 255));
         unblock_btn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         unblock_btn.setForeground(new java.awt.Color(255, 255, 255));
@@ -125,19 +109,17 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Input_Password)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(bt_login, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(init_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(unblock_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(563, 563, 563)
                                 .addComponent(jLabel3))
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bt_login, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(unblock_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -151,12 +133,11 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addComponent(Input_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_login, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(init_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(unblock_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -222,27 +203,6 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_bt_loginActionPerformed
-
-    private void init_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_init_btnActionPerformed
-        // TODO add your handling code here:
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));  
-        checkCard = card.checkCard();
-        switch (checkCard) {
-            case "1":
-                JOptionPane.showMessageDialog(null, "Thẻ đã được khởi tạo!", "", JOptionPane.INFORMATION_MESSAGE);
-                init_btn.setEnabled(false);
-                break;
-            case "0":
-                InitCardFrame formInit = new InitCardFrame();
-                formInit.setVisible(true);
-                formInit.setLocationRelativeTo(null);
-                this.setVisible(false);
-                break;
-            default:
-                break;
-        }
-
-    }//GEN-LAST:event_init_btnActionPerformed
 
     private void unblock_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unblock_btnActionPerformed
         // TODO add your handling code here:
@@ -310,7 +270,6 @@ public class LoginFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField Input_Password;
     private javax.swing.JButton bt_login;
-    private javax.swing.JButton init_btn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

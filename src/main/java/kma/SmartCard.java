@@ -38,7 +38,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return false;
@@ -67,7 +67,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return "0";
@@ -90,7 +90,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return "0";
@@ -111,14 +111,12 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return false;
             }
             String dataLc = String.valueOf(data.length);
-
             System.out.println("ok " + String.format("%x", new BigInteger(1, data)));
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x08, (byte) 0x01, (byte) 0x01, data));
             System.out.println("response " + response);
@@ -133,6 +131,9 @@ public class SmartCard {
             }
 
         } catch (Exception e) {
+                e.printStackTrace(); 
+//            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra");
+
         }
         return false;
     }
@@ -142,7 +143,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x09, (byte) 0x01, (byte) 0x01));
             System.out.println("response " + response);
@@ -167,7 +168,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return "0";
@@ -187,7 +188,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return false;
@@ -214,7 +215,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x06, (byte) 0x01, (byte) 0x01));
 
@@ -233,7 +234,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x15, (byte) 0x01, (byte) 0x01));
 
@@ -252,7 +253,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return false;
@@ -279,7 +280,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return false;
@@ -291,7 +292,11 @@ public class SmartCard {
                 return true;
             } else if (check.equals("6984")) {
                 UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
-                JOptionPane.showMessageDialog(null, "Nhập sai mã pin, mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Nhập sai mật khẩu, mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            } else if (check.equals("6986")) {
+                UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
+                JOptionPane.showMessageDialog(null, "Mật khẩu mới phải khác mật khẩu hiện tại!", "", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             } else {
                 return false;
@@ -307,7 +312,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x10, (byte) 0x01, (byte) 0x01));
 
@@ -326,7 +331,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x10, (byte) 0x02, (byte) 0x01));
 
@@ -345,7 +350,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x12, (byte) 0x01, (byte) 0x01));
 
@@ -364,7 +369,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x11, (byte) 0x01, (byte) 0x01, data));
             String check = Integer.toHexString(response.getSW());
@@ -388,7 +393,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x12, (byte) 0x01, (byte) 0x01));
 
@@ -408,7 +413,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             if (channel == null) {
                 return false;
@@ -436,7 +441,7 @@ public class SmartCard {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
             terminal = terminals.get(0);
-            card = terminal.connect("T=0");
+            card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x14, (byte) 0x01, (byte) 0x01, data));
 

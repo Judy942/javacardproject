@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package kma;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+
 /**
  *
  * @author Judy
@@ -18,6 +20,7 @@ public class ConnectFrame extends javax.swing.JFrame {
      */
     boolean isConnect = false;
     SmartCard sc = new SmartCard();
+
     public ConnectFrame() {
         initComponents();
         setLocationRelativeTo(null);
@@ -93,12 +96,20 @@ public class ConnectFrame extends javax.swing.JFrame {
                 isConnect = true;
                 bt_cnt.setText("Ngắt kết nối với thẻ");
                 bt_cnt.setForeground(Color.RED);
-                LoginFrame formLogin= new LoginFrame();
-                formLogin.setVisible(true);
-                formLogin.setLocationRelativeTo(null);
+                String checkCard = sc.checkCard();
+                if (checkCard.equals("0")) {
+                    InitCardFrame formInit = new InitCardFrame();
+                    formInit.setVisible(true);
+                    formInit.setLocationRelativeTo(null);
+                } else {
+                    LoginFrame formLogin = new LoginFrame();
+                    formLogin.setVisible(true);
+                    formLogin.setLocationRelativeTo(null);
+                }
+
             } else {
                 UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
-                JOptionPane.showMessageDialog(this, "connect thất bại","", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "connect thất bại", "", JOptionPane.WARNING_MESSAGE);
                 isConnect = false;
                 bt_cnt.setText("Kết nối với thẻ");
                 bt_cnt.setForeground(Color.BLACK);
