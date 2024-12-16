@@ -32,6 +32,7 @@ public class UpdateInfFrame extends javax.swing.JFrame {
     byte[] photo = null;
     SmartCard card = new SmartCard();
     int idLen, nameLen, addressLen, phoneLen;
+    boolean isChangeAvater = false;
 
     public UpdateInfFrame() {
         initComponents();
@@ -306,16 +307,20 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             // get data from input
+            boolean res;
+            boolean resUpAvatar = true;
             String stName = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
             String address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
-            String avatar = String.format("%x", new BigInteger(1, photo));
             String dataReq = stName + "03" + address;
             System.out.println("dataReq ;" + dataReq);
-            boolean res;
-            boolean resUpAvatar;
-            resUpAvatar = card.uploadAvatar(card.hexStringToByteArray(avatar));
-            res = true;
-//            res = card.changeInfo(card.hexStringToByteArray(dataReq));
+            
+            if (isChangeAvater) {
+                String avatar = String.format("%x", new BigInteger(1, photo));
+
+                resUpAvatar = card.uploadAvatar(card.hexStringToByteArray(avatar));
+            }
+
+            res = card.changeInfo(card.hexStringToByteArray(dataReq));
             if (res&&resUpAvatar) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công !", "", JOptionPane.INFORMATION_MESSAGE);
                 CardInfFrame customer = new CardInfFrame();
@@ -359,6 +364,7 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ImageIO.write(bImage, "jpg", bos);
             photo = bos.toByteArray();
+            isChangeAvater = true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
