@@ -28,15 +28,6 @@ public class PayFrame extends javax.swing.JFrame {
 
     public PayFrame() {
         initComponents();
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
-        if (card.connectCard()) {
-            isConnect = true;
-            JOptionPane.showMessageDialog(this, "Kết nối đến thẻ thành công!", "", JOptionPane.INFORMATION_MESSAGE);
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Chưa kết nối được thẻ!", "", JOptionPane.INFORMATION_MESSAGE);
-            isConnect = false;
-        }
     }
 
     public void addTable(String Name, Double Price) {

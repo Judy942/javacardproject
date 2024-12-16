@@ -182,9 +182,9 @@ public class DepositFrame extends javax.swing.JFrame {
             if(check ==true){
                 JOptionPane.showMessageDialog(null, "Nạp tiền thành công!","", JOptionPane.INFORMATION_MESSAGE);
                 CardInfFrame customer = new CardInfFrame();
-            customer.setVisible(true);
-            customer.setLocationRelativeTo(null);
-            this.setVisible(false);
+                customer.setVisible(true);
+                customer.setLocationRelativeTo(null);
+                this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(null, "Nạp tiền thất bại!","", JOptionPane.INFORMATION_MESSAGE);
             }

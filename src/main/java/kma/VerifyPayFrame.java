@@ -167,7 +167,7 @@ public class VerifyPayFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Nhập sai mã pin. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case "1":
-                    //Can xac thuc o day
+                    //TODO: Can xac thuc o day
                     String randomText = str.getAlphaNumericString(10);
                     String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
                     String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
@@ -202,10 +202,16 @@ public class VerifyPayFrame extends javax.swing.JFrame {
                     switch (pay) {
                         case "1":
                             JOptionPane.showMessageDialog(null, "Thanh toán thành công! Cảm ơn quý khách!", "", JOptionPane.INFORMATION_MESSAGE);
+                            CardInfFrame customer = new CardInfFrame();
+                            customer.setVisible(true);
+                            customer.setLocationRelativeTo(null);
                             this.setVisible(false);
                             break;
                         case "0":
                             JOptionPane.showMessageDialog(null, "Thanh toán không thành công!", "", JOptionPane.INFORMATION_MESSAGE);
+                            customer = new CardInfFrame();
+                            customer.setVisible(true);
+                            customer.setLocationRelativeTo(null);
                             this.setVisible(false);
                             break;
                     }
