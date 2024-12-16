@@ -318,9 +318,17 @@ public class UpdateInfFrame extends javax.swing.JFrame {
 //            res = card.changeInfo(card.hexStringToByteArray(dataReq));
             if (res&&resUpAvatar) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công !", "", JOptionPane.INFORMATION_MESSAGE);
+                CardInfFrame customer = new CardInfFrame();
+                customer.setVisible(true);
+                customer.setLocationRelativeTo(null);
+                this.setVisible(false);
             } else {
                 if (!resUpAvatar&&res) {
                     JOptionPane.showMessageDialog(null, "Cập nhật ảnh thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
+                    CardInfFrame customer = new CardInfFrame();
+                    customer.setVisible(true);
+                    customer.setLocationRelativeTo(null);
+                    this.setVisible(false);
                 } else {
                 JOptionPane.showMessageDialog(null, "Cập nhật thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
                 }

@@ -321,7 +321,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         VerifyPassworkFrame xacThuc = new VerifyPassworkFrame();
         xacThuc.setVisible(true);
         xacThuc.setLocationRelativeTo(null);
-        this.setVisible(false);
+//        this.setVisible(false);
     }//GEN-LAST:event_btnNapTienActionPerformed
 
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed

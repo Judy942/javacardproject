@@ -181,7 +181,10 @@ public class DepositFrame extends javax.swing.JFrame {
             boolean check= card.accountBalance(card.hexStringToByteArray(soNap));
             if(check ==true){
                 JOptionPane.showMessageDialog(null, "Nạp tiền thành công!","", JOptionPane.INFORMATION_MESSAGE);
-                this.setVisible(false);
+                CardInfFrame customer = new CardInfFrame();
+            customer.setVisible(true);
+            customer.setLocationRelativeTo(null);
+            this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(null, "Nạp tiền thất bại!","", JOptionPane.INFORMATION_MESSAGE);
             }
