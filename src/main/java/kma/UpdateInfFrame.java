@@ -5,6 +5,7 @@
 package kma;
 
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -13,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -303,6 +306,7 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         System.out.println("Test " + photo);
+        // Tải ảnh đã được tối ưu
         if (txtName.getText().equals("") == true || txtAddress.getText().equals("") == true) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -313,29 +317,28 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             String address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
             String dataReq = stName + "03" + address;
             System.out.println("dataReq ;" + dataReq);
-            
+
             if (isChangeAvater) {
                 String avatar = String.format("%x", new BigInteger(1, photo));
-
                 resUpAvatar = card.uploadAvatar(card.hexStringToByteArray(avatar));
             }
 
             res = card.changeInfo(card.hexStringToByteArray(dataReq));
-            if (res&&resUpAvatar) {
+            if (res && resUpAvatar) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công !", "", JOptionPane.INFORMATION_MESSAGE);
                 CardInfFrame customer = new CardInfFrame();
                 customer.setVisible(true);
                 customer.setLocationRelativeTo(null);
                 this.setVisible(false);
             } else {
-                if (!resUpAvatar&&res) {
+                if (!resUpAvatar && res) {
                     JOptionPane.showMessageDialog(null, "Cập nhật ảnh thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
                     CardInfFrame customer = new CardInfFrame();
                     customer.setVisible(true);
                     customer.setLocationRelativeTo(null);
                     this.setVisible(false);
                 } else {
-                JOptionPane.showMessageDialog(null, "Cập nhật thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại !", "", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         }
@@ -353,21 +356,60 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         JFileChooser jFileChooser = new JFileChooser();
-        jFileChooser.showOpenDialog(null);
-        File f = jFileChooser.getSelectedFile();
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon(f.toString()).getImage().getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
-        image.setIcon(imageIcon);
-        String fileName = f.getAbsolutePath();
-        System.out.println("ok " + f.toString());
-        try {
-            BufferedImage bImage = ImageIO.read(new File(fileName));
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ImageIO.write(bImage, "jpg", bos);
-            photo = bos.toByteArray();
-            isChangeAvater = true;
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+        int returnValue = jFileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File f = jFileChooser.getSelectedFile();
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(f.toString()).getImage().getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
+            image.setIcon(imageIcon);
+            String fileName = f.getAbsolutePath();
+            System.out.println("Selected file: " + f.toString());
+//            try {
+//                BufferedImage bImage = ImageIO.read(new File(fileName));
+//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                ImageIO.write(bImage, "jpg", bos);
+//                photo = bos.toByteArray();
+//                isChangeAvater = true;
+//
+//            } catch (Exception e) {
+//                JOptionPane.showMessageDialog(null, e);
+//            }
+            try {
+                // Load original image
+                BufferedImage originalImage = ImageIO.read(new File(fileName));
+
+                // Resize image to a smaller size (e.g., reduce to 5% of original size)
+                int scaledWidth = originalImage.getWidth() / 5;  // Giảm kích thước
+                int scaledHeight = originalImage.getHeight() / 5;
+                BufferedImage resizedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_RGB);
+                Graphics2D g2d = resizedImage.createGraphics();
+                g2d.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
+                g2d.dispose();
+
+                // Chuyển ảnh thành byte array mà không giảm chất lượng
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                // Nếu bạn muốn sử dụng JPG, điều chỉnh mức độ nén
+                javax.imageio.ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+                ImageWriteParam param = writer.getDefaultWriteParam();
+                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                param.setCompressionQuality(0.5f); //  Sử dụng mức nén hợp lý (giảm chất lượng một chút nhưng kích thước giảm đáng kể)
+
+                // Write the image with compression
+                writer.setOutput(ImageIO.createImageOutputStream(bos));
+                writer.write(null, new IIOImage(resizedImage, null, null), param);
+                writer.dispose();
+
+                photo = bos.toByteArray();
+                isChangeAvater = true;
+
+                System.out.println("Resized and compressed image size: " + photo.length + " bytes");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error while processing image: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
+
     }//GEN-LAST:event_btnImage1ActionPerformed
 
     /**

@@ -31,41 +31,33 @@ public class PayFrame extends javax.swing.JFrame {
     }
 
     public void addTable(String Name, Double Price) {
-        Double tqty;
-        String Qty = JOptionPane.showInputDialog("Nhập số lượng");
-        if (Qty == null) {
-            Qty = "";
-        }
-        if (Qty.isEmpty()) {
-            tqty = Double.valueOf(0);
-        } else {
+        Double tqty = Double.valueOf(0);
 
-            tqty = Double.valueOf(Qty);
-            if (tqty > 0) {
-                Double Tot_Price = Price * tqty;
-
-                DecimalFormat df = new DecimalFormat("00");
-                String d11 = df.format(Tot_Price);
-
-                DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
-
-                Vector v = new Vector();
-                v.add(Name);
-                v.add(Qty);
-                v.add(d11);
-                dt.addRow(v);
-            }
-
-        }
-        cart_cal();
-    }
+         Double Tot_Price = Price ;
+        
+        DecimalFormat df = new DecimalFormat("00");
+        String d11 = df.format(Tot_Price);
+       
+        
+        DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
+        
+        Vector v = new Vector();
+        v.add(Name);
+//        v.add(Qty);
+        v.add(d11);
+        dt.addRow(v);
+        
+         
+        
+      cart_cal();
+ } 
 
     public void cart_cal() {
 
         int numofrow = jTable1.getRowCount();
         double total = 0;
         for (int i = 0; i < numofrow; i++) {
-            double value = Double.valueOf(jTable1.getValueAt(i, 2).toString());
+            double value = Double.valueOf(jTable1.getValueAt(i, 1).toString());
             total += value;
 
         }
@@ -134,11 +126,11 @@ public class PayFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Đơn giá", "Số lượng"
+                "ID", "Đơn giá"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -241,7 +233,7 @@ public class PayFrame extends javax.swing.JFrame {
         int numrow = jTable1.getRowCount();
         int sum = 0;
         for (int i = 0; i < numrow; i++) {
-            int val = Integer.valueOf(jTable1.getValueAt(i, 2).toString());
+            int val = Integer.valueOf(jTable1.getValueAt(i, 1).toString());
             sum += val;
         }
         customer.setPay(sum);

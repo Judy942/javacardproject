@@ -1,4 +1,3 @@
-
 package kma;
 
 import java.awt.Font;
@@ -17,12 +16,11 @@ public class LoginFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
-    String login, password,sign, checkCard;
+    String login, password, sign, checkCard;
     SmartCard card = new SmartCard();
     RandomString str = new RandomString();
     byte signData[];
     boolean verify;
-
 
     public LoginFrame() {
         initComponents();
@@ -207,29 +205,14 @@ public class LoginFrame extends javax.swing.JFrame {
     private void unblock_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unblock_btnActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.BOLD, 24)));
-        if (Input_Password.getText().equals("") == true) {
-            JOptionPane.showMessageDialog(null, "Nhập mật khẩu để mở thẻ!", "", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            password = new String(Input_Password.getPassword());
-            System.out.println("pinUn " + password);
-            System.out.println("pinUn " + String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/))));
-            System.out.println("pinUn " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
-            //id = String.format("%x", new BigInteger(1, txtId.getText().getBytes()));
-            String unBlock = card.unblockcard(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
-            switch (unBlock) {
-                case "0":
-                    JOptionPane.showMessageDialog(null, "Mở khóa thất bại!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "1":
-                    JOptionPane.showMessageDialog(null, "Mở khóa thành công!", "", JOptionPane.INFORMATION_MESSAGE);
-                    CardInfFrame customer = new CardInfFrame();
-                    customer.setLocationRelativeTo(null);
-                    customer.setVisible(true);
-                    this.setVisible(false);
-                    break;
+        card.unblockcard();
 
-            }
-        }
+        JOptionPane.showMessageDialog(null, "Mở khóa thành công!", "", JOptionPane.INFORMATION_MESSAGE);
+        LoginFrame lg = new LoginFrame();
+        lg.setLocationRelativeTo(null);
+        lg.setVisible(true);
+        this.setVisible(false);
+
     }//GEN-LAST:event_unblock_btnActionPerformed
 
     /**

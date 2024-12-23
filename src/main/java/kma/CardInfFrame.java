@@ -4,13 +4,18 @@
  */
 package kma;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,11 +26,10 @@ public class CardInfFrame extends javax.swing.JFrame {
     /**
      * Creates new form CardInfFrame
      */
-    
     SmartCard card = new SmartCard();
     ThongTinThe info = new ThongTinThe();
     int idLen, nameLen, addressLen, phoneLen;
-    
+
     public CardInfFrame() {
         initComponents();
         setLocationRelativeTo(null);
@@ -44,7 +48,7 @@ public class CardInfFrame extends javax.swing.JFrame {
                 }
             }
         }
-        
+
         byte[] id, name, address, phone;
         id = new byte[idLen];
         name = new byte[nameLen];
@@ -53,33 +57,33 @@ public class CardInfFrame extends javax.swing.JFrame {
         for (int i = 0; i < idLen; i++) {
             id[i] = bytes[i];
         }
-        
+
         for (int i = 0; i < nameLen; i++) {
             name[i] = bytes[i + idLen + 1];
         }
-        
+
         for (int i = 0; i < phoneLen; i++) {
             phone[i] = bytes[i + idLen + 1 + nameLen + 1];
         }
-        
+
         for (int i = 0; i < addressLen; i++) {
             address[i] = bytes[i + idLen + 1 + nameLen + 1 + phoneLen + 1];
-        }        
-        
+        }
+
         txtId.setText(new String(id, StandardCharsets.UTF_8));
         txtName.setText(new String(name, StandardCharsets.UTF_8));
         txtAddress.setText(new String(address, StandardCharsets.UTF_8));
         txtPhone.setText(new String(phone, StandardCharsets.UTF_8));
         //So du, tich diem 
-        String du= card.checkScore();
-        String temp= du.substring(1);
-        String[] divide=temp.split("ff");
+        String du = card.checkScore();
+        String temp = du.substring(1);
+        String[] divide = temp.split("ff");
         //1000000
-        int soDu= Integer.parseInt(divide[0]);
+        int soDu = Integer.parseInt(divide[0]);
         txtSoDu.setText(String.valueOf(soDu));
-        int diem= Integer.parseInt(divide[1]);
+        int diem = Integer.parseInt(divide[1]);
         txtScore.setText(String.valueOf(diem));
-        
+
         //avatar
         String studentAvatar = card.getAvatar();
         System.out.println("Avatar " + studentAvatar);
@@ -96,8 +100,41 @@ public class CardInfFrame extends javax.swing.JFrame {
             } catch (IOException ex) {
                 
             }
+//try {
+//    // Đọc ảnh từ byte array
+//    b = ImageIO.read(bais);
+//
+//    // Kiểm tra xem ảnh có hợp lệ không
+//    if (b != null) {
+//        // Lấy kích thước hiện tại của ảnh
+//        int width = image.getWidth();
+//        int height = image.getHeight();
+//
+//        // Tạo một ảnh mới với kích thước hiện tại
+//        BufferedImage detailedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+//
+//        // Sử dụng Graphics2D để vẽ ảnh, giữ nguyên kích thước hiển thị
+//        Graphics2D g2d = detailedImage.createGraphics();
+//        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+//        g2d.drawImage(b, 0, 0, width, height, null);
+//        g2d.dispose(); // Giải phóng tài nguyên
+//
+//        // Tạo ImageIcon từ ảnh chi tiết
+//        ImageIcon icon = new ImageIcon(detailedImage);
+//
+//        // Đặt ảnh vào JLabel mà không thay đổi kích thước hiển thị
+//        image.setIcon(icon);
+//
+//    } else {
+//        System.out.println("Không thể đọc ảnh từ byte array.");
+//    }
+//
+//} catch (IOException ex) {
+//    ex.printStackTrace();
+//}
+
         }
-        
+
     }
 
     /**
@@ -238,27 +275,24 @@ public class CardInfFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
+                                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(30, 30, 30)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addComponent(jLabel5)
-                                            .addGap(105, 105, 105)
-                                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(jLabel4))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                                            .addComponent(txtPhone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(34, 34, 34)
@@ -267,7 +301,7 @@ public class CardInfFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
@@ -281,36 +315,34 @@ public class CardInfFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel3)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel5)
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtSoDu)
                     .addComponent(jLabel8)
                     .addComponent(txtScore))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -326,7 +358,7 @@ public class CardInfFrame extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        UpdateInfFrame update= new UpdateInfFrame();
+        UpdateInfFrame update = new UpdateInfFrame();
         update.setVisible(true);
         update.setLocationRelativeTo(null);
         this.setVisible(false);
@@ -342,7 +374,7 @@ public class CardInfFrame extends javax.swing.JFrame {
 
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
         // TODO add your handling code here:
-        ChangePasswordFrame changePin= new ChangePasswordFrame();
+        ChangePasswordFrame changePin = new ChangePasswordFrame();
         changePin.setVisible(true);
         changePin.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnChangePassActionPerformed

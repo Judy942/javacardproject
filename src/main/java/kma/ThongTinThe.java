@@ -13,7 +13,7 @@ public class ThongTinThe {
 //    public static void main(String[] args) {
 //        System.out.println("Hello World!");
 //    }
-   String id, name, address, phone, password;
+    String id, name, address, phone, password;
     byte[] image;
     int tk;
     int score;

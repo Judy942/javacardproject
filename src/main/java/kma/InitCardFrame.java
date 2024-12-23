@@ -11,7 +11,11 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Base64;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,21 +35,12 @@ public class InitCardFrame extends javax.swing.JFrame {
      * Creates new form InitCardFrame
      */
     SmartCard card = new SmartCard();
-    boolean tt = false;
-    boolean ttanh = false;
-    byte[] photo = null;
-    String id, name, phone, address, pin, repin, avatar;
+    String id, name, phone, address, pin;
     BigInteger modulusPubkey, exponentPubkey;
 
     public InitCardFrame() {
         initComponents();
         setLocationRelativeTo(null);
-    }
-
-    public InitCardFrame(SmartCard card, JButton jButton1, JLabel jLabel1, JTextField jTextField1) throws HeadlessException {
-        this.card = card;
-        this.jLabel1 = jLabel1;
-//        this.txtId = jTextField1;
     }
 
     /**
@@ -212,7 +207,7 @@ public class InitCardFrame extends javax.swing.JFrame {
 
     private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtAddressActionPerformed
 
     @SuppressWarnings("empty-statement")
@@ -227,61 +222,63 @@ public class InitCardFrame extends javax.swing.JFrame {
             boolean kt = txtPhone.getText().matches(reg);
             if (kt == false) {
                 JOptionPane.showMessageDialog(null, "Số điện thoại không đúng định dạng! Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-
             } else {
                 if (password.getText().equals(rePassword.getText()) == false) {
                     JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!", "", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    //TODO: kiểm tra sdt đã tồn tại trong db chưa 
                     try {
                         String phoneT = txtPhone.getText();
                         System.out.println("txtPhone" + phoneT);
-                            try {
-                                // lay id theo sdt
-                                System.out.println("phoneT" + phoneT);
-//                                String idP = null;
-//                                id = String.format("%x", new BigInteger(1, idP.getBytes()));
-                                id = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));
-                                name = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
-                                address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
-                                phone = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));
-                                pin = String.format("%x", new BigInteger(1, password.getText().getBytes()));
-                                String dataReq = id + "03" + name + "03" + phone + "03" + address + "03" + pin;
-                                System.out.println("chuoi = " + dataReq);
-                                if (card.connectCard()) {
-                                    System.out.println("Kết nối đến applet");
-                                }
-                                boolean res;
-                                res = card.initCard(card.hexStringToByteArray(dataReq));
+                        Connection conn = DBConnection.connect();
+                        Statement st = conn.createStatement();
+                        try {
+                            // lay id theo sdt
+                            System.out.println("phoneT" + phoneT);
+                            int rowCount = getRowCount();
+                            id = String.format("%x", new BigInteger(1, String.valueOf(rowCount).getBytes()));
 
-                                if (res) {
-                                    System.out.println("Thành công");
-                                    //TODO: ghi public key ->db
-                                    modulusPubkey = card.getModulusPubkey();
-                                    exponentPubkey = card.getExponentPubkey();
-                                    String publicKey = modulusPubkey + "/" + exponentPubkey;
-                                    System.out.println("publicKey = " + publicKey);
-                                    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-                                    RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(modulusPubkey, exponentPubkey);
-                                    PublicKey key = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
-                                    byte[] publicKeyByte = key.getEncoded();
-
-                                    //  Base64 encoded string
-                                    String publicKeyString = Base64.getEncoder().encodeToString(publicKeyByte);
-                                    System.out.println("publicKeyString=" + publicKeyString);
-
-                                    JOptionPane.showMessageDialog(null, "Lưu thông tin thành công!", "", JOptionPane.INFORMATION_MESSAGE);
-                                    LoginFrame formConnect = new LoginFrame();
-                                    formConnect.setLocationRelativeTo(null);
-                                    formConnect.setVisible(true);
-                                    this.setVisible(false);
-
-                                }
-                            } catch (Exception e) {
-                                System.out.println(e);
+//                            id = String.format("%x", new BigInteger(1, rowCount.getBytes()));
+                            name = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
+                            address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
+                            phone = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));
+                            pin = String.format("%x", new BigInteger(1, password.getText().getBytes()));
+                            String dataReq = id + "03" + name + "03" + phone + "03" + address + "03" + pin;
+                            System.out.println("chuoi = " + dataReq);
+                            if (card.connectCard()) {
+                                System.out.println("Kết nối đến applet");
                             }
+                            boolean res;
+                            res = card.initCard(card.hexStringToByteArray(dataReq));
+
+                            if (res) {
+                                System.out.println("Thành công");
+                                modulusPubkey = card.getModulusPubkey();
+                                exponentPubkey = card.getExponentPubkey();
+                                String publicKey = modulusPubkey + "/" + exponentPubkey;
+                                System.out.println("publicKey = " + publicKey);
+                                KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+                                RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(modulusPubkey, exponentPubkey);
+                                PublicKey key = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
+                                byte[] publicKeyByte = key.getEncoded();
+                                //  Base64 encoded string
+                                String publicKeyString = Base64.getEncoder().encodeToString(publicKeyByte);
+                                System.out.println("publicKeyString=" + publicKeyString);
+
+                                insertDataToDatabase(id, publicKeyString);
+                                JOptionPane.showMessageDialog(null, "Lưu thông tin thành công!", "", JOptionPane.INFORMATION_MESSAGE);
+                                LoginFrame formConnect = new LoginFrame();
+                                formConnect.setLocationRelativeTo(null);
+                                formConnect.setVisible(true);
+                                this.setVisible(false);
+
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
 
                     } catch (Exception e) {
+                        System.out.println(e);
+
                     }
 
                 }
@@ -289,6 +286,41 @@ public class InitCardFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private boolean insertDataToDatabase(String id, String publicKey) {
+        String insertSql = "INSERT INTO thethanhvien ( publickey, id) VALUES (?, ?)";
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(insertSql)) {
+
+            ps.setString(2, id);
+            ps.setString(1, publicKey);
+
+            int rowsInserted = ps.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Dữ liệu đã được chèn thành công!");
+                return true;
+            } else {
+                System.out.println("Không thể chèn dữ liệu!");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi chèn dữ liệu vào cơ sở dữ liệu: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private int getRowCount() {
+        String countSql = "SELECT COUNT(*) FROM thethanhvien";
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(countSql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // Lấy số lượng dòng
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi lấy số lượng dòng: " + e.getMessage());
+        }
+        return 0; // Trả về 0 nếu có lỗi
+    }
+
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:

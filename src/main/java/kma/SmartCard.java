@@ -26,12 +26,8 @@ public class SmartCard {
     private CardTerminal terminal;
     private List<CardTerminal> terminals;
     private ResponseAPDU response;
-    public SmartCard() {
-    }
 
-    public static void main(String[] args) {
-
-    }
+ 
 
     public boolean connectCard() {
         try {
@@ -76,16 +72,16 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x02, (byte) 0x01, (byte) 0x01, data));
             String check = Integer.toHexString(response.getSW());
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println(check+res);
+            System.out.println(check + res);
             return res;
 
         } catch (Exception e) {
             System.out.println(e);
-              return "0";
+            return "0";
         }
     }
 
-    public String unblockcard(byte[] data) {
+    public String unblockcard() {
         try {
             factory = TerminalFactory.getDefault();
             terminals = factory.terminals().list();
@@ -95,7 +91,9 @@ public class SmartCard {
             if (channel == null) {
                 return "0";
             }
-            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x03, (byte) 0x01, (byte) 0x01, data));
+            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x03, (byte) 0x01, (byte) 0x01));
+
+//            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x03, (byte) 0x01, (byte) 0x01, data));
             String check = Integer.toHexString(response.getSW());
             System.out.println("check " + check);
             String res = String.format("%x", new BigInteger(1, response.getData()));
@@ -131,7 +129,7 @@ public class SmartCard {
             }
 
         } catch (Exception e) {
-                e.printStackTrace(); 
+            e.printStackTrace();
 //            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra");
 
         }
