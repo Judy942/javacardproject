@@ -4,6 +4,7 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -38,6 +39,8 @@ public class UpdateInfFrame extends javax.swing.JFrame {
     boolean isChangeAvater = false;
 
     public UpdateInfFrame() {
+        getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         txtId.setEditable(false);
         txtPhone.setEditable(false);
@@ -83,19 +86,39 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         txtAddress.setText(new String(address, StandardCharsets.UTF_8));
         txtPhone.setText(new String(phone, StandardCharsets.UTF_8));
         String studentAvatar = card.getAvatar();
-        if (studentAvatar.equals("") == false) {
+//        if (studentAvatar.equals("") == false) {
+//            byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
+//            ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
+//            BufferedImage b;
+//            try {
+//                b = ImageIO.read(bais);
+//                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
+//                icon.getImage();
+//                image.setIcon(icon);
+//            } catch (IOException ex) {
+//
+//            }
+//        }
+        if (!studentAvatar.equals("")) {
             byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
-            BufferedImage b;
+            BufferedImage b = null;  // Khởi tạo b với giá trị null để kiểm tra sau
+
             try {
                 b = ImageIO.read(bais);
-                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
-                icon.getImage();
-                image.setIcon(icon);
+                if (b != null) {  // Kiểm tra b có phải là null không
+                    ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
+                    image.setIcon(icon);
+                } else {
+                    // Nếu ảnh không hợp lệ, có thể sử dụng ảnh mặc định hoặc thông báo lỗi
+                    System.out.println("Không thể đọc ảnh từ byte array.");
+                }
             } catch (IOException ex) {
-
+                ex.printStackTrace();
+                // Xử lý lỗi nếu có vấn đề khi đọc ảnh từ byte array
             }
         }
+
     }
 
     /**
@@ -162,7 +185,7 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         });
 
         ButtonSave.setBackground(new java.awt.Color(53, 66, 89));
-        ButtonSave.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        ButtonSave.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         ButtonSave.setForeground(new java.awt.Color(255, 255, 255));
         ButtonSave.setText("CẬP NHẬT THÔNG TIN");
         ButtonSave.addActionListener(new java.awt.event.ActionListener() {
@@ -192,9 +215,9 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             }
         });
 
-        back.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        back.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         back.setForeground(new java.awt.Color(53, 66, 89));
-        back.setText("Quay lại");
+        back.setText("HỦY");
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);

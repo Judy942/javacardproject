@@ -4,8 +4,10 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -27,44 +29,71 @@ public class PayFrame extends javax.swing.JFrame {
     boolean isConnect = false;
 
     public PayFrame() {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
     }
 
     public void addTable(String Name, Double Price) {
-        Double tqty = Double.valueOf(0);
 
-         Double Tot_Price = Price ;
-        
-        DecimalFormat df = new DecimalFormat("00");
-        String d11 = df.format(Tot_Price);
-       
-        
+//        Double tqty = Double.valueOf(0);
+//        Double Tot_Price = Price;
+//
+//        DecimalFormat df = new DecimalFormat("00");
+//        String d11 = df.format(Tot_Price);
+//
+//        DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
+//
+//        Vector v = new Vector();
+//        v.add(Name);
+////        v.add(Qty);
+//        v.add(d11);
+//        dt.addRow(v);
+//        cart_cal();
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.'); // Dấu phân cách phần nghìn là dấu chấm
+        formatter.setDecimalFormatSymbols(symbols);
+
+        Double Tot_Price = Price;
+        String formattedPrice = formatter.format(Tot_Price);
+
         DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
-        
         Vector v = new Vector();
         v.add(Name);
-//        v.add(Qty);
-        v.add(d11);
+        v.add(formattedPrice); // Định dạng số trước khi thêm vào bảng
         dt.addRow(v);
-        
-         
-        
-      cart_cal();
- } 
+
+        cart_cal(); // Tính toán lại tổng
+
+    }
 
     public void cart_cal() {
+
+//        int numofrow = jTable1.getRowCount();
+//        double total = 0;
+//        for (int i = 0; i < numofrow; i++) {
+//            double value = Double.valueOf(jTable1.getValueAt(i, 1).toString());
+//            total += value;
+//
+//        }
+//        DecimalFormat df = new DecimalFormat("00");
+//        String d1 = df.format(total);
+//        Sum.setText(d1);
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.'); // Dấu phân cách phần nghìn là dấu chấm
+        formatter.setDecimalFormatSymbols(symbols);
 
         int numofrow = jTable1.getRowCount();
         double total = 0;
         for (int i = 0; i < numofrow; i++) {
-            double value = Double.valueOf(jTable1.getValueAt(i, 1).toString());
+            // Loại bỏ dấu phân cách phần nghìn trước khi chuyển sang số
+            String valueStr = jTable1.getValueAt(i, 1).toString().replace(".", "");
+            double value = Double.parseDouble(valueStr);
             total += value;
-
         }
-
-        DecimalFormat df = new DecimalFormat("00");
-        String d1 = df.format(total);
-        Sum.setText(d1);
+        Sum.setText(formatter.format(total)); // Hiển thị tổng số đã định dạng
 
     }
 
@@ -148,7 +177,7 @@ public class PayFrame extends javax.swing.JFrame {
         Sum.setText("0");
 
         BtnThanhToan.setBackground(new java.awt.Color(53, 66, 89));
-        BtnThanhToan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        BtnThanhToan.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         BtnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
         BtnThanhToan.setText("THANH TOÁN");
         BtnThanhToan.addActionListener(new java.awt.event.ActionListener() {
@@ -165,9 +194,9 @@ public class PayFrame extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Sum, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Sum, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BtnThanhToan)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -230,20 +259,41 @@ public class PayFrame extends javax.swing.JFrame {
 
     private void BtnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnThanhToanActionPerformed
 
+//        int numrow = jTable1.getRowCount();
+//        int sum = 0;
+//        for (int i = 0; i < numrow; i++) {
+//            int val = Integer.valueOf(jTable1.getValueAt(i, 1).toString());
+//            sum += val;
+//        }
+//        customer.setPay(sum);
+//        Sum.setText(Integer.toString(sum));
+//
+//        VerifyPayFrame pay = new VerifyPayFrame(customer);
+//        System.out.println("get customer" + pay.customer.getPay());
+//        pay.setVisible(true);
+//        pay.setLocationRelativeTo(null);
+//        this.setVisible(false);
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.'); // Dấu phân cách phần nghìn là dấu chấm
+        formatter.setDecimalFormatSymbols(symbols);
+
         int numrow = jTable1.getRowCount();
         int sum = 0;
         for (int i = 0; i < numrow; i++) {
-            int val = Integer.valueOf(jTable1.getValueAt(i, 1).toString());
+            String valueStr = jTable1.getValueAt(i, 1).toString().replace(".", "");
+            int val = Integer.parseInt(valueStr);
             sum += val;
         }
         customer.setPay(sum);
-        Sum.setText(Integer.toString(sum));
+        Sum.setText(formatter.format(sum)); // Hiển thị tổng số đã định dạng
 
         VerifyPayFrame pay = new VerifyPayFrame(customer);
         System.out.println("get customer" + pay.customer.getPay());
         pay.setVisible(true);
         pay.setLocationRelativeTo(null);
         this.setVisible(false);
+
     }//GEN-LAST:event_BtnThanhToanActionPerformed
 
     /**

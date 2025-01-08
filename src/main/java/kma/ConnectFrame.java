@@ -22,6 +22,8 @@ public class ConnectFrame extends javax.swing.JFrame {
     SmartCard sc = new SmartCard();
 
     public ConnectFrame() {
+        getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         setLocationRelativeTo(null);
 
@@ -43,7 +45,7 @@ public class ConnectFrame extends javax.swing.JFrame {
         setBackground(new java.awt.Color(153, 153, 255));
 
         bt_cnt.setBackground(new java.awt.Color(102, 102, 255));
-        bt_cnt.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        bt_cnt.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         bt_cnt.setForeground(new java.awt.Color(255, 255, 255));
         bt_cnt.setText("KẾT NỐI VỚI THẺ");
         bt_cnt.setBorder(null);
@@ -71,8 +73,8 @@ public class ConnectFrame extends javax.swing.JFrame {
                         .addGap(52, 52, 52)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(bt_cnt, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(88, 88, 88)
+                        .addComponent(bt_cnt, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -80,9 +82,9 @@ public class ConnectFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addGap(73, 73, 73)
                 .addComponent(bt_cnt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         pack();

@@ -4,6 +4,7 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.math.BigInteger;
@@ -39,6 +40,8 @@ public class InitCardFrame extends javax.swing.JFrame {
     BigInteger modulusPubkey, exponentPubkey;
 
     public InitCardFrame() {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -96,7 +99,7 @@ public class InitCardFrame extends javax.swing.JFrame {
         jLabel1.setText("Khởi Tạo Thẻ");
 
         btnSave.setBackground(new java.awt.Color(102, 102, 255));
-        btnSave.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        btnSave.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("LƯU");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -232,12 +235,11 @@ public class InitCardFrame extends javax.swing.JFrame {
                         Connection conn = DBConnection.connect();
                         Statement st = conn.createStatement();
                         try {
-                            // lay id theo sdt
+
                             System.out.println("phoneT" + phoneT);
                             int rowCount = getRowCount();
                             id = String.format("%x", new BigInteger(1, String.valueOf(rowCount).getBytes()));
 
-//                            id = String.format("%x", new BigInteger(1, rowCount.getBytes()));
                             name = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
                             address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
                             phone = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));

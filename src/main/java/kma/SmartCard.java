@@ -68,11 +68,10 @@ public class SmartCard {
             if (channel == null) {
                 return "0";
             }
-            System.err.println("ok" + data.length);
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x02, (byte) 0x01, (byte) 0x01, data));
             String check = Integer.toHexString(response.getSW());
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println(check + res);
+            System.out.println("response login" + check + res);
             return res;
 
         } catch (Exception e) {
@@ -117,7 +116,7 @@ public class SmartCard {
             String dataLc = String.valueOf(data.length);
             System.out.println("ok " + String.format("%x", new BigInteger(1, data)));
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x08, (byte) 0x01, (byte) 0x01, data));
-            System.out.println("response " + response);
+            System.out.println("response uploadAvatar" + response);
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
                 return true;
@@ -144,7 +143,7 @@ public class SmartCard {
             card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x09, (byte) 0x01, (byte) 0x01));
-            System.out.println("response " + response);
+            System.out.println("response getAvatar" + response);
             String res = String.format("%x", new BigInteger(1, response.getData()));
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
@@ -172,7 +171,7 @@ public class SmartCard {
                 return "0";
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x07, (byte) 0x01, (byte) 0x01));
-            System.out.println("response " + response.getData());
+            System.out.println("response checkCard" + response.getData());
             String res = String.format("%x", new BigInteger(1, response.getData()));
             return res;
         } catch (Exception e) {
@@ -192,7 +191,7 @@ public class SmartCard {
                 return false;
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x01, (byte) 0x01, (byte) 0x01, data));
-            System.out.println("response " + response);
+            System.out.println("response initCard" + response);
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
                 return true;
@@ -218,7 +217,7 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x06, (byte) 0x01, (byte) 0x01));
 
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println("response " + res);
+            System.out.println("response get info" + res);
             return res;
 
         } catch (Exception e) {
@@ -237,7 +236,7 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x15, (byte) 0x01, (byte) 0x01));
 
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println("response " + res);
+            System.out.println("response getId" + res);
             return res;
 
         } catch (Exception e) {
@@ -257,7 +256,7 @@ public class SmartCard {
                 return false;
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x05, (byte) 0x01, (byte) 0x01, data));
-            System.out.println("response " + response);
+            System.out.println("response changeInfo" + response);
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
                 return true;
@@ -284,7 +283,7 @@ public class SmartCard {
                 return false;
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x04, (byte) 0x01, (byte) 0x01, data));
-            System.out.println("response " + response);
+            System.out.println("response changePin" + response);
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
                 return true;
@@ -343,24 +342,24 @@ public class SmartCard {
         return null;
     }
 
-    public String getRandomData() {
-        try {
-            factory = TerminalFactory.getDefault();
-            terminals = factory.terminals().list();
-            terminal = terminals.get(0);
-            card = terminal.connect("T=1");
-            channel = card.getBasicChannel();
-            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x12, (byte) 0x01, (byte) 0x01));
-
-            String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println("response " + res);
-            return res;
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        return "";
-    }
+//    public String getRandomData() {
+//        try {
+//            factory = TerminalFactory.getDefault();
+//            terminals = factory.terminals().list();
+//            terminal = terminals.get(0);
+//            card = terminal.connect("T=1");
+//            channel = card.getBasicChannel();
+//            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x12, (byte) 0x01, (byte) 0x01));
+//
+//            String res = String.format("%x", new BigInteger(1, response.getData()));
+//            System.out.println("response " + res);
+//            return res;
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        return "";
+//    }
 
     public String getSign(byte[] data) {
         try {
@@ -373,7 +372,7 @@ public class SmartCard {
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
                 String res = String.format("%x", new BigInteger(1, response.getData()));
-                System.out.println("response " + res);
+                System.out.println("response getSign" + res);
                 return res;
             } else if (check.equals("6984")) {
                 return "";
@@ -396,7 +395,7 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x12, (byte) 0x01, (byte) 0x01));
 
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println("response " + res);
+            System.out.println("response checkScore" + res);
             return res;
 
         } catch (Exception e) {
@@ -417,7 +416,7 @@ public class SmartCard {
                 return false;
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x13, (byte) 0x13, (byte) 0x01, data));
-            System.out.println("response " + response);
+            System.out.println("response accountBalance" + response);
             String check = Integer.toHexString(response.getSW());
             if (check.equals("9000")) {
                 return true;
@@ -444,7 +443,7 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x14, (byte) 0x01, (byte) 0x01, data));
 
             String res = String.format("%x", new BigInteger(1, response.getData()));
-            System.out.println("response " + res);
+            System.out.println("response pay" + res);
             return res;
 
         } catch (Exception e) {
@@ -467,7 +466,7 @@ public class SmartCard {
 
     public byte[] hexStringToByteArray(String s) {
         int len = s.length();
-        System.out.println("len " + len);
+        System.out.println("len hexStringToByteArray" + len);
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
             data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)

@@ -1,8 +1,16 @@
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -23,6 +31,8 @@ public class LoginFrame extends javax.swing.JFrame {
     boolean verify;
 
     public LoginFrame() {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         setLocationRelativeTo(null);
         checkCard = card.checkCard();
@@ -67,7 +77,7 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         bt_login.setBackground(new java.awt.Color(102, 102, 255));
-        bt_login.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        bt_login.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         bt_login.setForeground(new java.awt.Color(255, 255, 255));
         bt_login.setText("ĐĂNG NHẬP");
         bt_login.setBorderPainted(false);
@@ -80,7 +90,7 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         unblock_btn.setBackground(new java.awt.Color(102, 102, 255));
-        unblock_btn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        unblock_btn.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         unblock_btn.setForeground(new java.awt.Color(255, 255, 255));
         unblock_btn.setText("MỞ KHÓA THẺ");
         unblock_btn.setBorder(null);
@@ -151,13 +161,11 @@ public class LoginFrame extends javax.swing.JFrame {
         checkCard = card.checkCard();
         if (Input_Password.getText().equals("") == true) {
             JOptionPane.showMessageDialog(null, "Nhập mật khẩu để đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Đến đây");
         } else {
             password = new String(Input_Password.getPassword());
             System.out.println("pin " + password);
             System.out.println("pin2 " + String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/))));
             System.out.println("pin3 " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
-            //id = String.format("%x", new BigInteger(1, txtId.getText().getBytes()));
             login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
                 case "7":
@@ -183,12 +191,24 @@ public class LoginFrame extends javax.swing.JFrame {
                     //lay id
                     String idT = card.getId();
                     byte[] bytes = card.hexStringToByteArray(idT);
-                    String id = new String(bytes, StandardCharsets.UTF_8);
-                    System.out.println("id = " + id);
-                    CardInfFrame customer = new CardInfFrame();
-                    customer.setLocationRelativeTo(null);
-                    customer.setVisible(true);
-                    this.setVisible(false);
+//                    String id = new String(bytes, StandardCharsets.UTF_8);
+                    System.out.println("id = " + idT);
+                    try {
+                        verify = Verify_Digital_Signature(signData, card.hexStringToByteArray(sign), idT);
+                        System.out.println("Verify: " + verify);
+                        if (verify) {
+                            CardInfFrame customer = new CardInfFrame();
+                            customer.setLocationRelativeTo(null);
+                            customer.setVisible(true);
+                            this.setVisible(false);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Có lỗi trong quá trình xác thực, vui lòng thử lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Lỗi rồi", "", JOptionPane.INFORMATION_MESSAGE);
+                        Logger.getLogger(VerifyPassworkFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                     break;
                 case "2":
                     JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
@@ -202,6 +222,19 @@ public class LoginFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bt_loginActionPerformed
 
+    public boolean Verify_Digital_Signature(byte[] input, byte[] signatureToVerify, String id) throws Exception {
+        String str_key = DBConnection.getPublicKey(id);
+        System.out.println("str_key" + str_key);
+         byte[] pub_key = Base64.getDecoder().decode(str_key);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(pub_key);
+        PublicKey pub = keyFactory.generatePublic(publicKeySpec);
+        Signature signature = Signature.getInstance("SHA1withRSA");
+        signature.initVerify(pub);
+        signature.update(input);
+        return signature.verify(signatureToVerify);
+    }
+        
     private void unblock_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unblock_btnActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.BOLD, 24)));

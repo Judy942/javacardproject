@@ -4,6 +4,7 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -12,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.swing.ImageIcon;
@@ -31,6 +34,8 @@ public class CardInfFrame extends javax.swing.JFrame {
     int idLen, nameLen, addressLen, phoneLen;
 
     public CardInfFrame() {
+        getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         setLocationRelativeTo(null);
         String Info = card.getInfo();
@@ -79,8 +84,15 @@ public class CardInfFrame extends javax.swing.JFrame {
         String temp = du.substring(1);
         String[] divide = temp.split("ff");
         //1000000
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.'); // Đặt dấu phân cách phần nghìn là dấu chấm
+        formatter.setDecimalFormatSymbols(symbols);
         int soDu = Integer.parseInt(divide[0]);
-        txtSoDu.setText(String.valueOf(soDu));
+
+        txtSoDu.setText(formatter.format(soDu));
+//        int soDu = Integer.parseInt(divide[0]);
+//        txtSoDu.setText(String.valueOf(soDu));
         int diem = Integer.parseInt(divide[1]);
         txtScore.setText(String.valueOf(diem));
 
@@ -88,51 +100,37 @@ public class CardInfFrame extends javax.swing.JFrame {
         String studentAvatar = card.getAvatar();
         System.out.println("Avatar " + studentAvatar);
 
-        if (studentAvatar.equals("") == false) {
+//        if (studentAvatar.equals("") == false) {
+//            byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
+//            ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
+//            BufferedImage b;
+//            try {
+//                b = ImageIO.read(bais);
+//                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
+//                icon.getImage();
+//                image.setIcon(icon);
+//            } catch (IOException ex) {
+//
+//            }
+//
+//        }
+        if (!studentAvatar.equals("")) {
             byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
-            BufferedImage b;
+            BufferedImage b = null;  // Khởi tạo b với giá trị null để kiểm tra sau
             try {
                 b = ImageIO.read(bais);
-                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
-                icon.getImage();
-                image.setIcon(icon);
+                if (b != null) {  // Kiểm tra b có phải là null không
+                    ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
+                    image.setIcon(icon);
+                } else {
+                    // Nếu ảnh không hợp lệ, có thể sử dụng ảnh mặc định hoặc thông báo lỗi
+                    System.out.println("Không thể đọc ảnh từ byte array.");
+                }
             } catch (IOException ex) {
-                
+                ex.printStackTrace();
+                // Xử lý lỗi nếu có vấn đề khi đọc ảnh từ byte array
             }
-//try {
-//    // Đọc ảnh từ byte array
-//    b = ImageIO.read(bais);
-//
-//    // Kiểm tra xem ảnh có hợp lệ không
-//    if (b != null) {
-//        // Lấy kích thước hiện tại của ảnh
-//        int width = image.getWidth();
-//        int height = image.getHeight();
-//
-//        // Tạo một ảnh mới với kích thước hiện tại
-//        BufferedImage detailedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-//
-//        // Sử dụng Graphics2D để vẽ ảnh, giữ nguyên kích thước hiển thị
-//        Graphics2D g2d = detailedImage.createGraphics();
-//        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-//        g2d.drawImage(b, 0, 0, width, height, null);
-//        g2d.dispose(); // Giải phóng tài nguyên
-//
-//        // Tạo ImageIcon từ ảnh chi tiết
-//        ImageIcon icon = new ImageIcon(detailedImage);
-//
-//        // Đặt ảnh vào JLabel mà không thay đổi kích thước hiển thị
-//        image.setIcon(icon);
-//
-//    } else {
-//        System.out.println("Không thể đọc ảnh từ byte array.");
-//    }
-//
-//} catch (IOException ex) {
-//    ex.printStackTrace();
-//}
-
         }
 
     }
@@ -166,13 +164,12 @@ public class CardInfFrame extends javax.swing.JFrame {
         btnThanhToan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 575));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(53, 66, 89));
         jLabel1.setText("Thông tin thẻ");
 
-        txtSoDu.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
+        txtSoDu.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtSoDu.setForeground(new java.awt.Color(53, 66, 89));
         txtSoDu.setText("Số dư");
 
@@ -184,11 +181,11 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(53, 66, 89));
         jLabel2.setText("ID");
 
-        txtScore.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
+        txtScore.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtScore.setForeground(new java.awt.Color(53, 66, 89));
         txtScore.setText("score");
 
-        txtId.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
+        txtId.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtId.setForeground(new java.awt.Color(53, 66, 89));
         txtId.setText("ID");
 
@@ -202,7 +199,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel3.setText("Họ tên");
 
         btnUpdate.setBackground(new java.awt.Color(53, 66, 89));
-        btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("CẬP NHẬT");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -211,12 +208,12 @@ public class CardInfFrame extends javax.swing.JFrame {
             }
         });
 
-        txtName.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
+        txtName.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtName.setForeground(new java.awt.Color(53, 66, 89));
         txtName.setText("Họ tên");
 
         btnNapTien.setBackground(new java.awt.Color(53, 66, 89));
-        btnNapTien.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnNapTien.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnNapTien.setForeground(new java.awt.Color(255, 255, 255));
         btnNapTien.setText("NẠP TIỀN");
         btnNapTien.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +227,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel5.setText("Địa chỉ");
 
         btnChangePass.setBackground(new java.awt.Color(53, 66, 89));
-        btnChangePass.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnChangePass.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnChangePass.setForeground(new java.awt.Color(255, 255, 255));
         btnChangePass.setLabel("ĐỔI MẬT KHẨU");
         btnChangePass.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +236,7 @@ public class CardInfFrame extends javax.swing.JFrame {
             }
         });
 
-        txtAddress.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
+        txtAddress.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtAddress.setForeground(new java.awt.Color(53, 66, 89));
         txtAddress.setText("Địa chỉ");
 
@@ -247,7 +244,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(53, 66, 89));
         jLabel4.setText("Số điện thoại");
 
-        txtPhone.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
+        txtPhone.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtPhone.setForeground(new java.awt.Color(53, 66, 89));
         txtPhone.setText("Sdt");
 
@@ -256,7 +253,7 @@ public class CardInfFrame extends javax.swing.JFrame {
         jLabel6.setText("Số dư");
 
         btnThanhToan.setBackground(new java.awt.Color(53, 66, 89));
-        btnThanhToan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnThanhToan.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
         btnThanhToan.setLabel("THANH TOÁN");
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
@@ -342,7 +339,7 @@ public class CardInfFrame extends javax.swing.JFrame {
                     .addComponent(txtSoDu)
                     .addComponent(jLabel8)
                     .addComponent(txtScore))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))

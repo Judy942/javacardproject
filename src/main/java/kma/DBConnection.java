@@ -64,14 +64,15 @@ public class DBConnection {
     }
     
     public static String getPublicKey(String id) throws  SQLException {
+        System.out.println("id: "+ id);
         String str_key = null;
         Connection conn = DBConnection.connect();
         Statement st = conn.createStatement();
-        String sql = "select * from user where id='" + id + "'";
+        String sql = "select * from thethanhvien where id='" + id + "'";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            str_key = rs.getString("publicKey");
+            str_key = rs.getString("publickey");
         }
         return str_key;
     }

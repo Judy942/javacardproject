@@ -4,7 +4,10 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -22,13 +25,22 @@ public class DepositFrame extends javax.swing.JFrame {
     String soNap;
     SmartCard card = new SmartCard();
     public DepositFrame() {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         String du= card.checkScore();
         String temp= du.substring(1);
         String[] divide=temp.split("ff");
         //1000000
-        soDu= Integer.valueOf(divide[0]);
-        txtSoDu.setText(String.valueOf(soDu));
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.'); // Đặt dấu phân cách phần nghìn là dấu chấm
+        formatter.setDecimalFormatSymbols(symbols);
+
+        soDu= Integer.parseInt(divide[0]);
+        txtSoDu.setText(formatter.format(soDu));
+
+//        txtSoDu.setText(String.valueOf(soDu));
     }
 
     /**
@@ -86,7 +98,7 @@ public class DepositFrame extends javax.swing.JFrame {
         jLabel4.setText("VNĐ");
 
         btnNapTien.setBackground(new java.awt.Color(53, 66, 89));
-        btnNapTien.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        btnNapTien.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnNapTien.setForeground(new java.awt.Color(255, 255, 255));
         btnNapTien.setText("NẠP TIỀN");
         btnNapTien.addActionListener(new java.awt.event.ActionListener() {
@@ -95,9 +107,9 @@ public class DepositFrame extends javax.swing.JFrame {
             }
         });
 
-        back.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        back.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         back.setForeground(new java.awt.Color(53, 66, 89));
-        back.setText("Cancel");
+        back.setText("HỦY");
         back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backActionPerformed(evt);
@@ -121,8 +133,8 @@ public class DepositFrame extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addComponent(btnNapTien, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
-                                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(txtMoneyInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)

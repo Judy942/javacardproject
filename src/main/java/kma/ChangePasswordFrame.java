@@ -23,6 +23,8 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
     SmartCard handler = new SmartCard();
 
     public ChangePasswordFrame() {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
     }
 
@@ -47,15 +49,15 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 3, 22)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(53, 66, 89));
         jLabel3.setText("Nhập mật khẩu cũ");
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 3, 22)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(53, 66, 89));
         jLabel4.setText("Nhập mật khẩu mới");
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 3, 22)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(53, 66, 89));
         jLabel5.setText("Nhập lại mật khẩu");
 
@@ -81,7 +83,7 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
         });
 
         UpdateButton.setBackground(new java.awt.Color(53, 66, 89));
-        UpdateButton.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        UpdateButton.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         UpdateButton.setForeground(new java.awt.Color(255, 255, 255));
         UpdateButton.setText("CẬP NHẬT");
         UpdateButton.setBorderPainted(false);
@@ -91,7 +93,7 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
             }
         });
 
-        cancelButton.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        cancelButton.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         cancelButton.setForeground(new java.awt.Color(53, 66, 89));
         cancelButton.setText("HỦY");
         cancelButton.setBorder(null);
@@ -147,7 +149,7 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(UpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();

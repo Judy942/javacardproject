@@ -4,10 +4,15 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +36,8 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
     byte signData[];
 
     public VerifyPassworkFrame() {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         setLocationRelativeTo(null);
         modulusPubkey = card.getModulusPubkey();
@@ -53,7 +60,7 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(53, 66, 89));
         jLabel1.setText("XÁC NHẬN MẬT KHẨU");
 
@@ -66,7 +73,7 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
         });
 
         bntOK.setBackground(new java.awt.Color(53, 66, 89));
-        bntOK.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        bntOK.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         bntOK.setForeground(new java.awt.Color(255, 255, 255));
         bntOK.setText("OK");
         bntOK.addActionListener(new java.awt.event.ActionListener() {
@@ -75,7 +82,7 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(53, 66, 89));
         jLabel8.setText("Nhập mật khẩu");
 
@@ -86,15 +93,15 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(bntOK, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPin, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel8))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtPin)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(216, 216, 216)
+                        .addComponent(bntOK, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,8 +113,8 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bntOK, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                .addComponent(bntOK, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
 
         pack();
@@ -128,10 +135,14 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
             pin = new String(txtPin.getPassword());
             String login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
-                case "7" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                case "6" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                case "5" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                case "4" -> JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "7" ->
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "6" ->
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "5" ->
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                case "4" ->
+                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
                 case "1" -> {
                     //ToDO: Can xac thuc o day
                     String randomText = str.getAlphaNumericString(10);
@@ -142,17 +153,28 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
                     sign = card.getSign(signData);
                     //lay id
                     String idT = card.getId();
-                    byte[] bytes = card.hexStringToByteArray(idT);
-                    String id = new String(bytes, StandardCharsets.UTF_8);
-                    System.out.println("id = " + id);
-                    
-                    DepositFrame napTien = new DepositFrame();
-                    napTien.setVisible(true);
-                    napTien.setLocationRelativeTo(null);
-                    this.setVisible(false);
-                    
+                    System.out.println("id = " + idT);
+
+                    try {
+                        verify = Verify_Digital_Signature(signData, card.hexStringToByteArray(sign), idT);
+                        System.out.println("Verify: " + verify);
+                        if (verify) {
+                            //JOptionPane.showMessageDialog(null, "Xác thực thành công!");
+                            DepositFrame napTien = new DepositFrame();
+                            napTien.setVisible(true);
+                            napTien.setLocationRelativeTo(null);
+                            this.setVisible(false);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Có lỗi trong quá trình xác thực, vui lòng thử lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Lỗi rồi", "", JOptionPane.INFORMATION_MESSAGE);
+                        Logger.getLogger(VerifyPassworkFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
-                case "2" -> JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
+                case "2" ->
+                    JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
                 default -> {
                 }
 
@@ -160,6 +182,18 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bntOKActionPerformed
 
+    public boolean Verify_Digital_Signature(byte[] input, byte[] signatureToVerify, String id) throws Exception {
+        String str_key = DBConnection.getPublicKey(id);
+        System.out.println("str_key" + str_key);
+        byte[] pub_key = Base64.getDecoder().decode(str_key);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(pub_key);
+        PublicKey pub = keyFactory.generatePublic(publicKeySpec);
+        Signature signature = Signature.getInstance("SHA1withRSA");
+        signature.initVerify(pub);
+        signature.update(input);
+        return signature.verify(signatureToVerify);
+    }
 
     /**
      * @param args the command line arguments

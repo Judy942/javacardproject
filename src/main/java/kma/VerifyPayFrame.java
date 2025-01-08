@@ -4,9 +4,15 @@
  */
 package kma;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +38,8 @@ public class VerifyPayFrame extends javax.swing.JFrame {
     ThongTinThe customer = new ThongTinThe();
 
     public VerifyPayFrame(ThongTinThe customer) {
+                getContentPane().setBackground(new Color(204, 204, 255));
+
         initComponents();
         this.customer = customer;
         System.out.println("getPay " + customer.getPay());
@@ -60,16 +68,16 @@ public class VerifyPayFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 225));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(174, 186, 230), 3));
         jPanel1.setPreferredSize(new java.awt.Dimension(601, 350));
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(53, 66, 89));
         jLabel1.setText("XÁC NHẬN THANH TOÁN");
 
         bntEnter.setBackground(new java.awt.Color(53, 66, 89));
-        bntEnter.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        bntEnter.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         bntEnter.setForeground(new java.awt.Color(255, 255, 255));
         bntEnter.setText("OK");
         bntEnter.addActionListener(new java.awt.event.ActionListener() {
@@ -90,56 +98,51 @@ public class VerifyPayFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPin, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(174, 174, 174))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jLabel1)
-                .addGap(0, 77, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(198, 198, 198)
-                .addComponent(bntEnter, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtPin)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(242, 242, 242)
+                        .addComponent(bntEnter, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+                        .addGap(0, 8, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(157, 157, 157))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtPin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(37, 37, 37)
                         .addComponent(bntEnter, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -147,6 +150,7 @@ public class VerifyPayFrame extends javax.swing.JFrame {
 
     private void bntEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntEnterActionPerformed
         // TODO add your handling code here:
+        boolean verify;
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         if (txtPin.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Mời nhập Mật khẩu!", "", JOptionPane.INFORMATION_MESSAGE);
@@ -155,79 +159,101 @@ public class VerifyPayFrame extends javax.swing.JFrame {
             String login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, pin.getBytes(/*YOUR_CHARSET?*/)))));
             switch (login) {
                 case "7":
-                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                break;
                 case "6":
-                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                break;
                 case "5":
-                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                break;
                 case "4":
-                    JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần. Mời nhập lại!", "", JOptionPane.INFORMATION_MESSAGE);
+                break;
                 case "1":
-                    //TODO: Can xac thuc o day
-                    String randomText = str.getAlphaNumericString(10);
-                    String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
-                    String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
-                    String data = pinReq + "03" + random;
-                    signData = card.hexStringToByteArray(data);
-                    sign = card.getSign(signData);
+                //TODO: Can xac thuc o day
+                String randomText = str.getAlphaNumericString(10);
+                String pinReq = String.format("%x", new BigInteger(1, pin.getBytes()));
+                String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
+                String data = pinReq + "03" + random;
+                signData = card.hexStringToByteArray(data);
+                sign = card.getSign(signData);
 
-                    //lay id
-                    String idT = card.getId();
-                    byte[] bytes = card.hexStringToByteArray(idT);
-                    String id = new String(bytes, StandardCharsets.UTF_8);
-                    System.out.println("id = " + id);
-                    String temp = String.valueOf(customer.getPay());
-                    System.out.println(temp);
-                    String money;
-                    if (temp.length() % 2 == 0) {
-                        money = temp;
-                    } else {
-                        money = "0" + temp;
-                    }
-                    System.out.println("money " + money);
-                    String options[] = new String[2];
-                    options[0] = "Có";
-                    options[1] = "Không";
-                    int choose = JOptionPane.showOptionDialog(null, "Sử dụng tích điểm!", "Cảm ơn quý khách!", 0, QUESTION_MESSAGE, null, options, null);
-                    if (choose == JOptionPane.YES_OPTION) {
-                        money = "01" + money;
-                    } else {
-                        money = "00" + money;
-                    }
-                    String pay = card.pay(card.hexStringToByteArray(money));
-                    switch (pay) {
-                        case "1":
+                //lay id
+                String idT = card.getId();
+                byte[] bytes = card.hexStringToByteArray(idT);
+                //                    String id = new String(bytes, StandardCharsets.UTF_8);
+                System.out.println("id = " + idT);
+                try {
+                    verify = Verify_Digital_Signature(signData, card.hexStringToByteArray(sign), idT);
+                    System.out.println("Verify: " + verify);
+                    if (verify) {
+                        String temp = String.valueOf(customer.getPay());
+                        System.out.println(temp);
+                        String money;
+                        if (temp.length() % 2 == 0) {
+                            money = temp;
+                        } else {
+                            money = "0" + temp;
+                        }
+                        System.out.println("money " + money);
+                        String options[] = new String[2];
+                        options[0] = "Có";
+                        options[1] = "Không";
+                        int choose = JOptionPane.showOptionDialog(null, "Sử dụng tích điểm!", "Cảm ơn quý khách!", 0, QUESTION_MESSAGE, null, options, null);
+                        if (choose == JOptionPane.YES_OPTION) {
+                            money = "01" + money;
+                        } else {
+                            money = "00" + money;
+                        }
+                        String pay = card.pay(card.hexStringToByteArray(money));
+                        switch (pay) {
+                            case "1":
                             JOptionPane.showMessageDialog(null, "Thanh toán thành công! Cảm ơn quý khách!", "", JOptionPane.INFORMATION_MESSAGE);
                             CardInfFrame customer = new CardInfFrame();
                             customer.setVisible(true);
                             customer.setLocationRelativeTo(null);
                             this.setVisible(false);
                             break;
-                        case "0":
+                            case "0":
                             JOptionPane.showMessageDialog(null, "Thanh toán không thành công!", "", JOptionPane.INFORMATION_MESSAGE);
                             customer = new CardInfFrame();
                             customer.setVisible(true);
                             customer.setLocationRelativeTo(null);
                             this.setVisible(false);
                             break;
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Có lỗi trong quá trình xác thực, vui lòng thử lại!", "", JOptionPane.INFORMATION_MESSAGE);
                     }
-
-                    break;
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Lỗi rồi", "", JOptionPane.INFORMATION_MESSAGE);
+                    Logger.getLogger(VerifyPayFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
                 case "2":
-                    JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
+                break;
                 default:
-                    break;
+                break;
 
             }
 
         }
     }//GEN-LAST:event_bntEnterActionPerformed
 
+        public boolean Verify_Digital_Signature(byte[] input, byte[] signatureToVerify, String id) throws Exception {
+        String str_key = DBConnection.getPublicKey(id);
+        System.out.println("str_key" + str_key);
+         byte[] pub_key = Base64.getDecoder().decode(str_key);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(pub_key);
+        PublicKey pub = keyFactory.generatePublic(publicKeySpec);
+        Signature signature = Signature.getInstance("SHA1withRSA");
+        signature.initVerify(pub);
+        signature.update(input);
+        return signature.verify(signatureToVerify);
+    }
     /**
      * @param args the command line arguments
      */
