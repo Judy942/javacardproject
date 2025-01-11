@@ -168,10 +168,8 @@ public class VerifyPassworkFrame extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Có lỗi trong quá trình xác thực, vui lòng thử lại!", "", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Lỗi rồi", "", JOptionPane.INFORMATION_MESSAGE);
                         Logger.getLogger(VerifyPassworkFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
                 }
                 case "2" ->
                     JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);

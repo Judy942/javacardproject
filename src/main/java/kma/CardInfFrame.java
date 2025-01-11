@@ -100,20 +100,6 @@ public class CardInfFrame extends javax.swing.JFrame {
         String studentAvatar = card.getAvatar();
         System.out.println("Avatar " + studentAvatar);
 
-//        if (studentAvatar.equals("") == false) {
-//            byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
-//            ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
-//            BufferedImage b;
-//            try {
-//                b = ImageIO.read(bais);
-//                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
-//                icon.getImage();
-//                image.setIcon(icon);
-//            } catch (IOException ex) {
-//
-//            }
-//
-//        }
         if (!studentAvatar.equals("")) {
             byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
@@ -129,7 +115,6 @@ public class CardInfFrame extends javax.swing.JFrame {
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
-                // Xử lý lỗi nếu có vấn đề khi đọc ảnh từ byte array
             }
         }
 
@@ -400,16 +385,11 @@ public class CardInfFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CardInfFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CardInfFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CardInfFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CardInfFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -29,30 +29,15 @@ public class PayFrame extends javax.swing.JFrame {
     boolean isConnect = false;
 
     public PayFrame() {
-                getContentPane().setBackground(new Color(204, 204, 255));
-
+        getContentPane().setBackground(new Color(204, 204, 255));
         initComponents();
     }
 
     public void addTable(String Name, Double Price) {
 
-//        Double tqty = Double.valueOf(0);
-//        Double Tot_Price = Price;
-//
-//        DecimalFormat df = new DecimalFormat("00");
-//        String d11 = df.format(Tot_Price);
-//
-//        DefaultTableModel dt = (DefaultTableModel) jTable1.getModel();
-//
-//        Vector v = new Vector();
-//        v.add(Name);
-////        v.add(Qty);
-//        v.add(d11);
-//        dt.addRow(v);
-//        cart_cal();
         DecimalFormat formatter = new DecimalFormat("#,###");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator('.'); // Dấu phân cách phần nghìn là dấu chấm
+        symbols.setGroupingSeparator('.');
         formatter.setDecimalFormatSymbols(symbols);
 
         Double Tot_Price = Price;
@@ -70,16 +55,6 @@ public class PayFrame extends javax.swing.JFrame {
 
     public void cart_cal() {
 
-//        int numofrow = jTable1.getRowCount();
-//        double total = 0;
-//        for (int i = 0; i < numofrow; i++) {
-//            double value = Double.valueOf(jTable1.getValueAt(i, 1).toString());
-//            total += value;
-//
-//        }
-//        DecimalFormat df = new DecimalFormat("00");
-//        String d1 = df.format(total);
-//        Sum.setText(d1);
         DecimalFormat formatter = new DecimalFormat("#,###");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setGroupingSeparator('.'); // Dấu phân cách phần nghìn là dấu chấm
@@ -88,7 +63,6 @@ public class PayFrame extends javax.swing.JFrame {
         int numofrow = jTable1.getRowCount();
         double total = 0;
         for (int i = 0; i < numofrow; i++) {
-            // Loại bỏ dấu phân cách phần nghìn trước khi chuyển sang số
             String valueStr = jTable1.getValueAt(i, 1).toString().replace(".", "");
             double value = Double.parseDouble(valueStr);
             total += value;
@@ -259,20 +233,6 @@ public class PayFrame extends javax.swing.JFrame {
 
     private void BtnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnThanhToanActionPerformed
 
-//        int numrow = jTable1.getRowCount();
-//        int sum = 0;
-//        for (int i = 0; i < numrow; i++) {
-//            int val = Integer.valueOf(jTable1.getValueAt(i, 1).toString());
-//            sum += val;
-//        }
-//        customer.setPay(sum);
-//        Sum.setText(Integer.toString(sum));
-//
-//        VerifyPayFrame pay = new VerifyPayFrame(customer);
-//        System.out.println("get customer" + pay.customer.getPay());
-//        pay.setVisible(true);
-//        pay.setLocationRelativeTo(null);
-//        this.setVisible(false);
         DecimalFormat formatter = new DecimalFormat("#,###");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setGroupingSeparator('.'); // Dấu phân cách phần nghìn là dấu chấm

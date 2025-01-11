@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package kma;
+
 import java.awt.*;
 import java.math.BigInteger;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
-
 
 /**
  *
@@ -18,12 +18,11 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
     /**
      * Creates new form ChangePasswordFrame
      */
-    
     String password, newpassword, repassword;
     SmartCard handler = new SmartCard();
 
     public ChangePasswordFrame() {
-                getContentPane().setBackground(new Color(204, 204, 255));
+        getContentPane().setBackground(new Color(204, 204, 255));
 
         initComponents();
     }
@@ -163,21 +162,21 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         if (oldPassword.getText().equals("") == true || newPassword.getText().equals("") == true
-            || rePassword.getText().equals("") == true) {
-            JOptionPane.showMessageDialog(null, "Mời nhập đủ thông tin!","", JOptionPane.INFORMATION_MESSAGE);
+                || rePassword.getText().equals("") == true) {
+            JOptionPane.showMessageDialog(null, "Mời nhập đủ thông tin!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             // get data from input
             password = String.format("%x", new BigInteger(1, oldPassword.getText().getBytes()));
             newpassword = String.format("%x", new BigInteger(1, newPassword.getText().getBytes()));
             repassword = String.format("%x", new BigInteger(1, rePassword.getText().getBytes()));
             if (newpassword.equals(repassword) == false) {
-                JOptionPane.showMessageDialog(null, "Mật khẩu nhập lại không khớp!","", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Mật khẩu nhập lại không khớp!", "", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 String dataReq = password + "03" + newpassword;
                 boolean res;
                 res = handler.changePin(handler.hexStringToByteArray(dataReq));
                 if (res) {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thành công!","", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công!", "", JOptionPane.INFORMATION_MESSAGE);
                     this.setVisible(false);
                 }
 
@@ -187,7 +186,7 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
-        CardInfFrame customer= new CardInfFrame();
+        CardInfFrame customer = new CardInfFrame();
         customer.setVisible(true);
         customer.setLocationRelativeTo(null);
         this.setVisible(false);
@@ -209,15 +208,11 @@ public class ChangePasswordFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ChangePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */

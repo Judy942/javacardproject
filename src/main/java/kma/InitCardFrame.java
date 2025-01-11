@@ -9,8 +9,10 @@ import java.awt.Font;
 import java.awt.HeadlessException;
 import java.math.BigInteger;
 import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,11 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
@@ -40,7 +38,7 @@ public class InitCardFrame extends javax.swing.JFrame {
     BigInteger modulusPubkey, exponentPubkey;
 
     public InitCardFrame() {
-                getContentPane().setBackground(new Color(204, 204, 255));
+        getContentPane().setBackground(new Color(204, 204, 255));
 
         initComponents();
         setLocationRelativeTo(null);
@@ -230,16 +228,11 @@ public class InitCardFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!", "", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     try {
-                        String phoneT = txtPhone.getText();
-                        System.out.println("txtPhone" + phoneT);
                         Connection conn = DBConnection.connect();
-                        Statement st = conn.createStatement();
+//                        Statement st = conn.createStatement();
                         try {
-
-                            System.out.println("phoneT" + phoneT);
                             int rowCount = getRowCount();
                             id = String.format("%x", new BigInteger(1, String.valueOf(rowCount).getBytes()));
-
                             name = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
                             address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
                             phone = String.format("%x", new BigInteger(1, txtPhone.getText().getBytes()));
@@ -253,7 +246,6 @@ public class InitCardFrame extends javax.swing.JFrame {
                             res = card.initCard(card.hexStringToByteArray(dataReq));
 
                             if (res) {
-                                System.out.println("Thành công");
                                 modulusPubkey = card.getModulusPubkey();
                                 exponentPubkey = card.getExponentPubkey();
                                 String publicKey = modulusPubkey + "/" + exponentPubkey;
@@ -261,26 +253,23 @@ public class InitCardFrame extends javax.swing.JFrame {
                                 KeyFactory keyFactory = KeyFactory.getInstance("RSA");
                                 RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(modulusPubkey, exponentPubkey);
                                 PublicKey key = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
+                                //Mã hóa khóa công khai thành Base64
                                 byte[] publicKeyByte = key.getEncoded();
-                                //  Base64 encoded string
                                 String publicKeyString = Base64.getEncoder().encodeToString(publicKeyByte);
                                 System.out.println("publicKeyString=" + publicKeyString);
-
                                 insertDataToDatabase(id, publicKeyString);
                                 JOptionPane.showMessageDialog(null, "Lưu thông tin thành công!", "", JOptionPane.INFORMATION_MESSAGE);
                                 LoginFrame formConnect = new LoginFrame();
                                 formConnect.setLocationRelativeTo(null);
                                 formConnect.setVisible(true);
                                 this.setVisible(false);
-
                             }
-                        } catch (Exception e) {
+                        } catch (HeadlessException | NoSuchAlgorithmException | InvalidKeySpecException e) {
                             System.out.println(e);
                         }
 
                     } catch (Exception e) {
                         System.out.println(e);
-
                     }
 
                 }
@@ -292,10 +281,8 @@ public class InitCardFrame extends javax.swing.JFrame {
     private boolean insertDataToDatabase(String id, String publicKey) {
         String insertSql = "INSERT INTO thethanhvien ( publickey, id) VALUES (?, ?)";
         try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(insertSql)) {
-
             ps.setString(2, id);
             ps.setString(1, publicKey);
-
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Dữ liệu đã được chèn thành công!");
@@ -348,22 +335,12 @@ public class InitCardFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InitCardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InitCardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InitCardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(InitCardFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InitCardFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new InitCardFrame().setVisible(true);
         });
     }
 

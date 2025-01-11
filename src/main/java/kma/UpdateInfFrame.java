@@ -86,19 +86,6 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         txtAddress.setText(new String(address, StandardCharsets.UTF_8));
         txtPhone.setText(new String(phone, StandardCharsets.UTF_8));
         String studentAvatar = card.getAvatar();
-//        if (studentAvatar.equals("") == false) {
-//            byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
-//            ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
-//            BufferedImage b;
-//            try {
-//                b = ImageIO.read(bais);
-//                ImageIcon icon = new ImageIcon(b.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH));
-//                icon.getImage();
-//                image.setIcon(icon);
-//            } catch (IOException ex) {
-//
-//            }
-//        }
         if (!studentAvatar.equals("")) {
             byte[] bytesAvatar = card.hexStringToByteArray(studentAvatar);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytesAvatar);
@@ -329,23 +316,20 @@ public class UpdateInfFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Times New Roman", Font.BOLD, 24)));
         System.out.println("Test " + photo);
-        // Tải ảnh đã được tối ưu
+
         if (txtName.getText().equals("") == true || txtAddress.getText().equals("") == true) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // get data from input
             boolean res;
             boolean resUpAvatar = true;
             String stName = String.format("%x", new BigInteger(1, txtName.getText().getBytes()));
             String address = String.format("%x", new BigInteger(1, txtAddress.getText().getBytes()));
             String dataReq = stName + "03" + address;
             System.out.println("dataReq ;" + dataReq);
-
             if (isChangeAvater) {
                 String avatar = String.format("%x", new BigInteger(1, photo));
                 resUpAvatar = card.uploadAvatar(card.hexStringToByteArray(avatar));
             }
-
             res = card.changeInfo(card.hexStringToByteArray(dataReq));
             if (res && resUpAvatar) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công !", "", JOptionPane.INFORMATION_MESSAGE);
@@ -386,16 +370,6 @@ public class UpdateInfFrame extends javax.swing.JFrame {
             image.setIcon(imageIcon);
             String fileName = f.getAbsolutePath();
             System.out.println("Selected file: " + f.toString());
-//            try {
-//                BufferedImage bImage = ImageIO.read(new File(fileName));
-//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                ImageIO.write(bImage, "jpg", bos);
-//                photo = bos.toByteArray();
-//                isChangeAvater = true;
-//
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(null, e);
-//            }
             try {
                 // Load original image
                 BufferedImage originalImage = ImageIO.read(new File(fileName));

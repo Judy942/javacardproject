@@ -3,14 +3,11 @@ package kma;
 import java.awt.Color;
 import java.awt.Font;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -31,7 +28,7 @@ public class LoginFrame extends javax.swing.JFrame {
     boolean verify;
 
     public LoginFrame() {
-                getContentPane().setBackground(new Color(204, 204, 255));
+        getContentPane().setBackground(new Color(204, 204, 255));
 
         initComponents();
         setLocationRelativeTo(null);
@@ -163,35 +160,24 @@ public class LoginFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nhập mật khẩu để đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
             password = new String(Input_Password.getPassword());
-            System.out.println("pin " + password);
-            System.out.println("pin2 " + String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/))));
-            System.out.println("pin3 " + card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
-            login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes(/*YOUR_CHARSET?*/)))));
+            login = card.login(card.hexStringToByteArray(String.format("%x", new BigInteger(1, password.getBytes()))));
             switch (login) {
-                case "7":
+                case "7" ->
                     JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 4 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "6":
+                case "6" ->
                     JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 3 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "5":
+                case "5" ->
                     JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 2 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "4":
+                case "4" ->
                     JOptionPane.showMessageDialog(null, "Sai mật khẩu. Còn 1 lần đăng nhập!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case "1":
-                    //TODO: Can xac thuc o day
+                case "1" -> {
                     String randomText = str.getAlphaNumericString(10);
                     String pinReq = String.format("%x", new BigInteger(1, password.getBytes()));
                     String random = String.format("%x", new BigInteger(1, randomText.getBytes()));
                     String data = pinReq + "03" + random;
                     signData = card.hexStringToByteArray(data);
                     sign = card.getSign(signData);
-                    //lay id
                     String idT = card.getId();
-                    byte[] bytes = card.hexStringToByteArray(idT);
-//                    String id = new String(bytes, StandardCharsets.UTF_8);
                     System.out.println("id = " + idT);
                     try {
                         verify = Verify_Digital_Signature(signData, card.hexStringToByteArray(sign), idT);
@@ -205,19 +191,16 @@ public class LoginFrame extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Có lỗi trong quá trình xác thực, vui lòng thử lại!", "", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Lỗi rồi", "", JOptionPane.INFORMATION_MESSAGE);
-                        Logger.getLogger(VerifyPassworkFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println(ex);
                     }
-
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     JOptionPane.showMessageDialog(null, "Thẻ đã bị khóa", "", JOptionPane.INFORMATION_MESSAGE);
                     bt_login.setEnabled(false);
                     unblock_btn.setEnabled(true);
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Có Lỗi xảy ra !!!", "", JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                }
+                default ->
+                    System.out.println("lỗi ở đây");
             }
         }
     }//GEN-LAST:event_bt_loginActionPerformed
@@ -225,21 +208,20 @@ public class LoginFrame extends javax.swing.JFrame {
     public boolean Verify_Digital_Signature(byte[] input, byte[] signatureToVerify, String id) throws Exception {
         String str_key = DBConnection.getPublicKey(id);
         System.out.println("str_key" + str_key);
-         byte[] pub_key = Base64.getDecoder().decode(str_key);
+        byte[] pub_key = Base64.getDecoder().decode(str_key);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(pub_key);
         PublicKey pub = keyFactory.generatePublic(publicKeySpec);
         Signature signature = Signature.getInstance("SHA1withRSA");
-        signature.initVerify(pub);
-        signature.update(input);
+        signature.initVerify(pub); //khởi tạo chữ kí 
+        signature.update(input); //Cập nhật dữ liệu cần xác minh
         return signature.verify(signatureToVerify);
     }
-        
+
     private void unblock_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unblock_btnActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.BOLD, 24)));
         card.unblockcard();
-
         JOptionPane.showMessageDialog(null, "Mở khóa thành công!", "", JOptionPane.INFORMATION_MESSAGE);
         LoginFrame lg = new LoginFrame();
         lg.setLocationRelativeTo(null);
@@ -276,10 +258,8 @@ public class LoginFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new LoginFrame().setVisible(true);
         });
     }
 

@@ -27,8 +27,6 @@ public class SmartCard {
     private List<CardTerminal> terminals;
     private ResponseAPDU response;
 
- 
-
     public boolean connectCard() {
         try {
             factory = TerminalFactory.getDefault();
@@ -91,14 +89,12 @@ public class SmartCard {
                 return "0";
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x03, (byte) 0x01, (byte) 0x01));
-
-//            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x03, (byte) 0x01, (byte) 0x01, data));
             String check = Integer.toHexString(response.getSW());
             System.out.println("check " + check);
             String res = String.format("%x", new BigInteger(1, response.getData()));
             return res;
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (CardException e) {
+            System.out.println(e);
         }
         return "0";
     }
@@ -113,26 +109,28 @@ public class SmartCard {
             if (channel == null) {
                 return false;
             }
-            String dataLc = String.valueOf(data.length);
             System.out.println("ok " + String.format("%x", new BigInteger(1, data)));
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x08, (byte) 0x01, (byte) 0x01, data));
             System.out.println("response uploadAvatar" + response);
             String check = Integer.toHexString(response.getSW());
-            if (check.equals("9000")) {
-                return true;
-            } else if (check.equals("6400")) {
-                JOptionPane.showMessageDialog(null, "Upload that bai");
-                return true;
-            } else {
-                return false;
+            switch (check) {
+                case "9000" -> {
+                    return true;
+                }
+                case "6400" -> {
+                    JOptionPane.showMessageDialog(null, "Upload that bai");
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-//            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra");
-
+        } catch (HeadlessException | CardException e) {
+            System.out.println(e);
+            return false;
         }
-        return false;
+
     }
 
     public String getAvatar() {
@@ -146,18 +144,21 @@ public class SmartCard {
             System.out.println("response getAvatar" + response);
             String res = String.format("%x", new BigInteger(1, response.getData()));
             String check = Integer.toHexString(response.getSW());
-            if (check.equals("9000")) {
-                return res;
-            } else if (check.equals("6A83")) {
-                return "";
-            } else {
-                return "";
-            }
+            return switch (check) {
+                case "9000" ->
+                    res;
+                case "6A83" ->
+                    "";
+                default ->
+                    "";
+            };
 
-        } catch (Exception e) {
+        } catch (CardException e) {
             JOptionPane.showMessageDialog(null, e);
+            System.out.println(e);
+            return "";
         }
-        return "";
+
     }
 
     public String checkCard() {
@@ -171,10 +172,10 @@ public class SmartCard {
                 return "0";
             }
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x07, (byte) 0x01, (byte) 0x01));
-            System.out.println("response checkCard" + response.getData());
+            System.out.println("response checkCard" + response);
             String res = String.format("%x", new BigInteger(1, response.getData()));
             return res;
-        } catch (Exception e) {
+        } catch (CardException e) {
             JOptionPane.showMessageDialog(null, e);
             return "0";
         }
@@ -193,18 +194,20 @@ public class SmartCard {
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x01, (byte) 0x01, (byte) 0x01, data));
             System.out.println("response initCard" + response);
             String check = Integer.toHexString(response.getSW());
-            if (check.equals("9000")) {
-                return true;
-            } else if (check.equals("6400")) {
-                JOptionPane.showMessageDialog(null, "Upload that bai");
-                return true;
-            } else {
-                return false;
+            switch (check) {
+                case "9000":
+                    return true;
+                case "6400":
+                    JOptionPane.showMessageDialog(null, "Upload that bai");
+                    return true;
+                default:
+                    return false;
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | CardException e) {
+            return false;
         }
-        return false;
+
     }
 
     public String getInfo() {
@@ -234,15 +237,16 @@ public class SmartCard {
             card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x15, (byte) 0x01, (byte) 0x01));
-
             String res = String.format("%x", new BigInteger(1, response.getData()));
             System.out.println("response getId" + res);
             return res;
 
-        } catch (Exception e) {
+        } catch (CardException e) {
             JOptionPane.showMessageDialog(null, e);
+            System.out.println(e);
+            return "";
         }
-        return "";
+
     }
 
     public boolean changeInfo(byte[] data) {
@@ -312,11 +316,9 @@ public class SmartCard {
             card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x10, (byte) 0x01, (byte) 0x01));
-
             BigInteger res = new BigInteger(1, response.getData());
             System.out.println("responseM " + res);
             return res;
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -331,35 +333,15 @@ public class SmartCard {
             card = terminal.connect("T=1");
             channel = card.getBasicChannel();
             response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x10, (byte) 0x02, (byte) 0x01));
-
             BigInteger res = new BigInteger(1, response.getData());
             System.out.println("responseE " + res);
             return res;
 
-        } catch (Exception e) {
+        } catch (CardException e) {
             JOptionPane.showMessageDialog(null, e);
         }
         return null;
     }
-
-//    public String getRandomData() {
-//        try {
-//            factory = TerminalFactory.getDefault();
-//            terminals = factory.terminals().list();
-//            terminal = terminals.get(0);
-//            card = terminal.connect("T=1");
-//            channel = card.getBasicChannel();
-//            response = channel.transmit(new CommandAPDU((byte) 0x00, (byte) 0x12, (byte) 0x01, (byte) 0x01));
-//
-//            String res = String.format("%x", new BigInteger(1, response.getData()));
-//            System.out.println("response " + res);
-//            return res;
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
-//        return "";
-//    }
 
     public String getSign(byte[] data) {
         try {
@@ -377,8 +359,7 @@ public class SmartCard {
             } else if (check.equals("6984")) {
                 return "";
             }
-
-        } catch (Exception e) {
+        } catch (CardException e) {
             JOptionPane.showMessageDialog(null, e);
         }
         return "";
@@ -398,7 +379,7 @@ public class SmartCard {
             System.out.println("response checkScore" + res);
             return res;
 
-        } catch (Exception e) {
+        } catch (CardException e) {
             JOptionPane.showMessageDialog(null, e);
         }
         return "";
@@ -427,7 +408,9 @@ public class SmartCard {
                 return false;
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | CardException e) {
+                        System.out.println(e);
+
         }
         return false;
     }
@@ -453,16 +436,16 @@ public class SmartCard {
     }
 
     //format
-    public String stringToHex(String string) {
-        StringBuilder buf = new StringBuilder(200);
-        for (char ch : string.toCharArray()) {
-            if (buf.length() > 0) {
-                buf.append(' ');
-            }
-            buf.append(String.format("%04x", (int) ch));
-        }
-        return buf.toString();
-    }
+//    public String stringToHex(String string) {
+//        StringBuilder buf = new StringBuilder(200);
+//        for (char ch : string.toCharArray()) {
+//            if (buf.length() > 0) {
+//                buf.append(' ');
+//            }
+//            buf.append(String.format("%04x", (int) ch));
+//        }
+//        return buf.toString();
+//    }
 
     public byte[] hexStringToByteArray(String s) {
         int len = s.length();
@@ -479,7 +462,7 @@ public class SmartCard {
         try {
             card.disconnect(false);
             return true;
-        } catch (Exception e) {
+        } catch (CardException e) {
             System.err.println("Loi: " + e);
         }
         return false;
